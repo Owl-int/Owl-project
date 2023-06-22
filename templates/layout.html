@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<link rel="icon" href="static/img/Anny_pet_0.1.png">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <title>OWL</title>
+    <!---- Liga a bootstrap (framework CSS)--->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!---- Liga a CSS local---->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a href="/"><img src="static/img/logo2.png" height="60" width="60"> &nbsp;&nbsp;&nbsp;</a>
+        <a class="navbar-brand" title="Regresar a la página principal" href="/">Home |  Owl</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="true" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <main class="container">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <div class="dropdown mb-3">
+                    <a href="#" class="btn btn-primary dropdown-toggle" role="button" id="catalagos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Catálogo 1
+                    </a>
+                        <div class="dropdown-menu" aria-labelledby="catalagos">
+                            <a href="/pacientes" class="dropdown-item">Ejemplo 1</a>
+                            <a href="/prueba1" class="dropdown-item">Ejemplo 2</a>
+                        </div>
+                </div>
+
+                <div class="dropdown mb-3">
+                    <a href="#" class="btn btn-primary dropdown-toggle" role="button" id="empresa" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Catalago 2
+                </a>
+                    <div class="dropdown-menu" aria-labelledby="Empresa">
+                        <a href="/prueba1" class="dropdown-item">Ejemplo 1</a>
+                        <a href="/prueba1" class="dropdown-item">Ejemplo 2</a>
+                    </div>
+                </div>
+
+                <div class="dropdown mb-3">
+                    <a href="#" class="btn btn-primary dropdown-toggle" role="button" id="empresa" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Catalago 3
+                </a>
+                    <div class="dropdown-menu" aria-labelledby="Empresa">
+                        <a href="/prueba1" class="dropdown-item">Ejemplo 1</a>
+                        <a href="/prueba1" class="dropdown-item">Ejemplo 2</a>
+                    </div>
+                </div>
+            </main>
+            <div style="text-align: center">
+                <a href="/login"> Login 
+            </div>
+            <div style="text-align: center">
+                <a href="/logout">
+                    <img src="/static/img/logout.png" title="Cerrar sesion" width="40" height="35">
+                </a>
+            </div>
+        </nav>
+    </body>
+    
+</html>
+
+{% block content %} {% endblock %}

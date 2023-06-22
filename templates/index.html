@@ -1,0 +1,65 @@
+{%extends "layout.html" %} <!-- Importa el layout.html -->
+{% block content %}   <!-- Delimita el fin del layout.html -->
+
+<head>
+    <title>OWL</title>
+    <link rel="stylesheet" href="static/css/slide.css">
+
+    <!--
+
+      Esta es la página principal de Owl
+
+    -->
+</head>
+<body style="background-color:#F6F6F6;">
+<center>
+    <script type="text/javascript" src="/static/js/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript" src="/static/js/popper.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <script defer src="/static/js/slide_funcion.js"></script>
+    <br>
+    <br>
+    <!-- Slide -->
+    <section id="container-slider">	
+        <a href="javascript: fntExecuteSlide('prev');" class="arrowPrev"><i class="fas fa-chevron-circle-left"></i></a>
+        <a href="javascript: fntExecuteSlide('next');" class="arrowNext"><i class="fas fa-chevron-circle-right"></i></a>
+        <ul class="listslider">
+            <li><a itlist="itList_0" href="#" class="item-select-slid"></a></li>
+            <li><a itlist="itList_1" href="#"></a></li>
+            <li><a itlist="itList_2" href="#"></a></li>
+        </ul>
+        <ul id="slider">
+        <li style="background-image: url('/static/img/Anny_pet_0.2.png'); z-index:0; opacity: 1;">
+            <div class="content_slider" >
+              <div>
+                <h2>Welcome to Owl</h2>
+            <p>Descubra en qué consiste Owl</p>
+          </div>
+            </div>
+          </li>
+          <li style="background-image: url('/static/img/oficina2.jpeg'); ">
+            <!--  -->
+            <div class="content_slider" >
+              <div>
+                <h2>Owl introduction</h2>
+            <p>Owl es un sistema dedicado a la salud mental, este es un prototipo inicial </p>
+          </div>
+            </div>
+          </li>
+          <li style="background-image: url('/static/img/logo3.png'); ">
+            <div class="content_slider" >
+              <div>
+                <h2>Estrategias de negocio</h2>
+            <p>Las estrategias de negocio representan planes o métodos...</p>
+          </div>
+            </div>
+          </li>
+       </ul>
+     </section>
+    <!-- Slide /-->
+
+</center>
+</body>
+
+{% endblock %} <!-- Finaliza el apartado donde se importa otro lenguaje -->

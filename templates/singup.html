@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<link rel="icon" href="static/img/Anny_pet_0.1.png">
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Crear cuenta</title>
+		<link rel="stylesheet" href="static/css/login.css" />		
+    	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	</head>
+	<body style="background-color:#D5DBDB;">
+		<h2>Bienvenido a Owl, Inicia sesión o crea una cuenta</h2>
+		<div class="container" id="container">
+			<div class="form-container sign-in-container">
+				<form action="/singup" method="POST">
+					<h1>Sign in</h1>
+					<div class="social-container">
+                        <a href="/" class="social"><i class="home"></i><img src="/static/img/home.png"></a>
+						<a href="#" class="social"><i class="fab fa-facebook-f"></i><img src="/static/img/facebook.png"></a>
+						<a href="#" class="social"><i class="fab fa-google-plus-g"></i><img src="/static/img/google.png"></a>
+						<a href="#" class="social"><i class="fab fa-linkedin-in"></i><img src="/static/img/linkedin.png"></a>
+					</div>
+					<span>Ingresa tus datos </span>
+                    <!-- Formulario -->
+                    <div>
+                        <input type="text" id="nom_usuario" name="nom_usuario" placeholder="Nombre de usuario" required>
+                        <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                        
+                        <div class="horz-form"> 
+                            <input type="text" id="ap_paterno" name="ap_paterno" placeholder="Apellido paterno" required>                                  
+                            <input type="text" id="ap_materno" name="ap_materno" placeholder="Apellido materno" required>
+                        </div> 
+                        
+                            <input type="email" id="correo" name="correo" placeholder="Ejemplo@ejemplo.com" required>
+                            <input type="password" id="passw" name="passw" placeholder="Contraseña" required>                                                                  
+                        </div>     
+                        <button type="submit">Iniciar sesión</button></a>
+                    <div>
+                    </div>        
+				</form>
+			</div>
+			<div class="overlay-container">
+				<div class="overlay">					
+					<div class="overlay-panel overlay-right">	
+						<h1>¿Ya tienes cuenta?</h1>
+						<p>Inicia sesión para disfrutar de los beneficios de Owl:</p>
+						<a type="button" href="/login"><button class="ghost" id="signUp">Iniciar sesión </button></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer>
+			<p>
+				ola, no supe que poner aqui 
+			</p>
+		</footer>	
+	</body>
+</html>

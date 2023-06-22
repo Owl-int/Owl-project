@@ -1,0 +1,18 @@
+nav-item{
+color:006666
+}
+body{
+background: #ffffff; 
+
+}
+.center-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.horz-form{
+    display: flex;
+    width: 50%;
+}

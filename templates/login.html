@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<link rel="icon" href="static/img/Anny_pet_0.1.png">
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Login</title>
+		<link rel="stylesheet" href="static/css/login.css" />
+		
+    	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	</head>	
+	<body style="background-color:#D5DBDB;">
+		<h2>Bienvenido a Owl, Inicia sesión o crea una cuenta</h2>
+		<div class="container" id="container">
+			<div class="form-container sign-in-container">
+				<form action="/login" method="POST">
+					<h1>Sign in</h1>
+					<div class="social-container">
+						<a href="/" class="social" class="home" ><i class="home"></i><img src="/static/img/home.png"></a>
+						<a href="#" class="social"><i class="fab fa-facebook-f"></i><img src="/static/img/facebook.png"></a>
+						<a href="#" class="social"><i class="fab fa-google-plus-g"></i><img src="/static/img/google.png"></a>
+						<a href="#" class="social"><i class="fab fa-linkedin-in"></i><img src="/static/img/linkedin.png"></a>
+					</div>
+					<span>O usa tu cuenta</span>
+					<input type="email" id="correo" name="correo" placeholder="Email" />
+					<input type="password" id="passw" name="passw"  placeholder="Password" />
+					<a href="#">Forgot your password?</a>
+					<a type="button" href="/"><button type="submit">Iniciar sesión</button></a>
+				</form>
+			</div>
+			<div class="overlay-container">
+				<div class="overlay">					
+					<div class="overlay-panel overlay-right">
+						<h1>¡Bienvenido!</h1>
+						<p>Para disfrutar de los beneficios de Owl</p>
+						<a type="button" href="/singup" ><button class="ghost" id="signUp" >Crea una cuenta</button></a>												
+					</div>					
+				</div>
+			</div>
+		</div>
+		<footer>
+			<p>
+				ola, no supe que poner aqui 
+			</p>
+		</footer>	
+	</body>
+</html>
