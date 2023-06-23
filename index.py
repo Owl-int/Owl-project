@@ -1,6 +1,6 @@
 # Se importan los frameworks 
 from flask import Flask, g, render_template, request, redirect, url_for, session, json, jsonify
-#from flask login
+from functools import wraps
 from flask_mysqldb import MySQL,MySQLdb
 import pymysql
 
@@ -20,16 +20,17 @@ mysql = MySQL(app)
 
 # Clase de usuarios
 class user:
-    def __init__(self,id, nom_usuario , correo, password):
-        self.id = id
+    def __init__(self,id_usuario, nom_usuario, correo, passw):
+        self.id_usuario = id_usuario
         self.nom_usuario = nom_usuario
-        self.correo = correo
-        self.password = password
+        self.correo = correo 
+        self.passw = passw        
     def __repr__(self):
         return '<User:{self.nom_usuario}>'
 
 #Objeto de la clase usuarios
 users=[]
+no_auth_routes = ['login', 'singup','/']
 
 # Inicio de la web (index, hub, hobby)
 @app.route('/',methods=['GET','POST'])
@@ -38,6 +39,32 @@ def home():
         #
         return render_template('index.html')
     return render_template('index.html')
+
+
+# Comprobar la sesión
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'id_usuario' not in session:
+            error = "Error: 403 Acceso no autorizado"
+            return render_template("error_usuario.html", des_error=error, paginaant='/login')
+        
+        id_usuario = session['id_usuario']
+        if not isinstance(id_usuario, (int, float)):
+            error = "Error: 403 Acceso no autorizado"
+            return render_template("error_usuario.html", des_error=error, paginaant='/login')
+        
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
+        cursor = conn.cursor()
+        cursor.execute('select id_usuario, nom_usuario, correo, passw from usuarios where id_usuario=%s', (session['id_usuario']))
+        dato = cursor.fetchone()
+        users.clear()
+        users.append(user(id_usuario=dato[0], nom_usuario=[1], correo=[2], passw=[3]))
+        g.user = users[0]
+
+        return f(*args, **kwargs)
+    return(decorated_function)
+
 
 # Uso de prueba para la conexión de la base de datos
 @app.route('/singup', methods=['GET','POST'])
@@ -81,14 +108,6 @@ def singup():
         conn.close()
     return render_template('singup.html')
 
-# Obtener id de la sesión
-def get_session():
-    id=session.get('id_usuario')    
-    if id is not None and (id, (int, float)):
-        id= int(id)
-        return(print(id))
-    return id
-
 # Módulo para iniciar sesión 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -109,14 +128,13 @@ def login():
             return render_template("error_usuario.html", des_error=error, paginaant='/login')
         elif (usuario=='admin'):
             session['admin']=usuario[0]        
-            print(session)
-            get_session()
+            print(session)        
             return render_template('index.html')
         else:
             #en caso de que jale 
             session['id_usuario']=usuario[0]        
-            print(session)
-            get_session()
+            print(session)            
+            print('usuarios: ', user)
             return render_template('index.html')
         
     return render_template('login.html')
@@ -129,36 +147,36 @@ def logout():
     return render_template("login.html")
 
 # Módulo de pacientes 
-@app.route('/pacientes', methods=['GET', 'POST'])
+@app.route('/paciente', methods=['GET', 'POST'])
+@login_required
 def pacientes():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
-    cursor = conn.cursor()
+    cursor = conn.cursor()  
     cursor.execute=('select nombre_cliente, ap_pa, ap_ma, fecha_nacimiento, genero from Paciente order by Paciente')
     #datos = cursor.fetchall()
     conn.close()
-    print (session)
-    
-    return render_template('prueba1.html')#, paciente=datos)
-
+    return render_template('pacientes.html') 
 
 
 # Módulo para agregar pacientes
-@app.route('/agr_pacientes/', methods=['GET', 'POST'])
-def agr_pacientes():
+@app.route('/agr_paciente/<id>', methods=['GET', 'POST'])
+def agr_pacientes(id):
     if request.method=='POST':
-        nombre_paciente = request.form['nom_cliente']
-        ap_pa = request.form['ap_pa']
-        ap_ma = request.form['ap_ma']
-        fecha_nacimiento = request.form['fecha_nacimiento']
-        genero = request.form['genero']
+        aux_nombre_paciente = request.form['nom_cliente']
+        aux_ap_pa = request.form['ap_pa']
+        aux_ap_ma = request.form['ap_ma']
+        aux_fecha_nacimiento = request.form['fecha_nacimiento']
+        aux_genero = request.form['genero']
         
-       
-        
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
-        cursor = conn.cursor('insert into Paciente (nom_cliente,)')
-        datos = cursor.fetchall();
-        print(datos)
-    return render_template('pureba1.html')
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')        
+        cursor = conn.cursor()
+        cursor.execute('select id_usario form usuarios where id_usuario=%s',(id))
+        datos1=cursor.fetchall()
+        cursor.commit()
+        #cursor = conn.cursor('insert into Paciente (nom_cliente,)')
+        #datos = cursor.fetchall();
+        #print(datos)
+    return render_template('agr_paciente.html', id=datos1)
 
 
 

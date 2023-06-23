@@ -17,6 +17,9 @@
         <h3>Pacientes registrados</h3>
     </center>
     <center>
+        <a href='/agr_paciente' class="btn btn-primary">Agregar a un paciente</a>
+    </center>
+    <center>
         <table class="content-table">
             <thead>
                 <tr>
@@ -26,16 +29,18 @@
                 </tr>
             </thead>
             <tbody>
-                {% for puesto in puestos %}
+                {% for paciente in pacientes %}
                 <tr>
-                    <td>
-                        <!--
-                            {{ puesto.1 }}
-                        -->
-                        Insertar datos de la base de datos
+                    <td>   
+                        
+                        Insertar datos de la base de datos 
+                    <!--
+                        {{ paciente.0 }}                                                
+                    -->         
+                                                    
                     </td>
                     <td bgcolor="#828282" width="60">
-                        <!--/ed_puesto/{{puesto.0}}-->
+                        <!--/ed_puesto/{{paciente.0}}-->
                         <center><a href="#" style="color:#FFFFFF; text-decoration:none;">Editar &nbsp;<i class="far fa-edit"></i></a></center>
                     </td>
                     <td bgcolor="#FFF5757" width="60">
