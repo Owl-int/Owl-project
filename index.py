@@ -17,6 +17,20 @@ app.config['MYSQL_DB'] = 'owldb_v1'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
+
+# Clase de usuarios
+class user:
+    def __init__(self,id, nom_usuario , correo, password):
+        self.id = id
+        self.nom_usuario = nom_usuario
+        self.correo = correo
+        self.password = password
+    def __repr__(self):
+        return '<User:{self.nom_usuario}>'
+
+#Objeto de la clase usuarios
+users=[]
+
 # Inicio de la web (index, hub, hobby)
 @app.route('/',methods=['GET','POST'])
 def home():
@@ -24,8 +38,6 @@ def home():
         #
         return render_template('index.html')
     return render_template('index.html')
-
-
 
 # Uso de prueba para la conexión de la base de datos
 @app.route('/singup', methods=['GET','POST'])
@@ -69,14 +81,21 @@ def singup():
         conn.close()
     return render_template('singup.html')
 
+# Obtener id de la sesión
+def get_session():
+    id=session.get('id_usuario')    
+    if id is not None and (id, (int, float)):
+        id= int(id)
+        return(print(id))
+    return id
 
+# Módulo para iniciar sesión 
 @app.route('/login', methods=['GET','POST'])
 def login():
     session.pop('id_usuario', None)
     if request.method=='POST':
         correo = request.form['correo']
         passw = request.form['passw']
-        
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1' )
         cursor = conn.cursor()
         
@@ -88,13 +107,26 @@ def login():
             conn.close()
             error="usuario y/o contraseña no son conrrectos"
             return render_template("error_usuario.html", des_error=error, paginaant='/login')
+        elif (usuario=='admin'):
+            session['admin']=usuario[0]        
+            print(session)
+            get_session()
+            return render_template('index.html')
         else:
             #en caso de que jale 
             session['id_usuario']=usuario[0]        
+            print(session)
+            get_session()
             return render_template('index.html')
         
     return render_template('login.html')
 
+# Cerrar sesión
+@app.route('/logout')
+def logout():
+    session.clear()
+    print(session)
+    return render_template("login.html")
 
 # Módulo de pacientes 
 @app.route('/pacientes', methods=['GET', 'POST'])
@@ -104,11 +136,13 @@ def pacientes():
     cursor.execute=('select nombre_cliente, ap_pa, ap_ma, fecha_nacimiento, genero from Paciente order by Paciente')
     #datos = cursor.fetchall()
     conn.close()
+    print (session)
+    
     return render_template('prueba1.html')#, paciente=datos)
 
 
 
-
+# Módulo para agregar pacientes
 @app.route('/agr_pacientes/', methods=['GET', 'POST'])
 def agr_pacientes():
     if request.method=='POST':
@@ -118,6 +152,7 @@ def agr_pacientes():
         fecha_nacimiento = request.form['fecha_nacimiento']
         genero = request.form['genero']
         
+       
         
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
         cursor = conn.cursor('insert into Paciente (nom_cliente,)')
