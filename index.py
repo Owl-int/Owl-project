@@ -172,7 +172,7 @@ def logout():
 # Módulo de pacientes 
 @app.route('/paciente')
 @login_required #Comprobar la sesión
-def pacientes():        
+def paciente():        
     get_user() # Tomar el id del usuario
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
     cursor = conn.cursor()  
@@ -213,7 +213,56 @@ def nuevo_paciente():
         conn.commit()
         conn.close()        
     return render_template("nuevo_paciente.html")
+    
+#<----------------  Editar paciente xd --------------------------------------------------------------------------------->
 
+# Editar paciente
+@app.route("/ed_paciente/<string:id>")
+def ed_paciente(id):
+    get_user()
+    id_aux = g.id_us
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
+    cursor = conn.cursor()
+    
+    cursor.execute(' select id_paciente, nombre_cliente, ap_pa, ap_ma, fecha_nacimiento, genero, id_usuario '
+                   ' from Paciente '
+                   ' where id_paciente and id_usuario=%s', (id, id_aux))
+    
+    datos = cursor.fetchall()           
+    conn.commit()
+    conn.close()
+    return render_template('edi_paciente.html', paciente=datos)
+
+
+@app.route("/modificar_paciente/<string:id>", methods=['GET', 'POST'])
+def modificar_paciente(id): 
+    get_user()
+    if request.method=='POST':
+        aux_regis = request.form ['regis_on']
+        aux_nombre_paciente = request.form['nom_cliente']
+        aux_ap_pa = request.form['ap_pa']
+        aux_ap_ma = request.form['ap_ma']
+        aux_fecha_nacimiento = request.form['fecha_nacimiento']
+        aux_genero = request.form['genero']
+        aux_civil = request.form['civil']        
+        aux_antecedentes = request.form['antecedentes']    
+        aux_medicamentos = request.form['medicamentos']
+        
+        id_aux=g.id_us
+        
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
+        cursor = conn.cursor()
+        
+        cursor.execute(' update nombre_cliente=%s, ap_pa=%s, ap_ma=%s, fecha_nacimiento=%s, genero=%s'
+                       ' from Paciente where id_paciente=%s and id_usuario=%s', (aux_regis, aux_nombre_paciente, 
+                        aux_ap_pa, aux_ap_ma, aux_fecha_nacimiento, aux_genero, aux_civil, aux_antecedentes, 
+                        aux_medicamentos, id, id_aux))
+        conn.commit()
+        return redirect(url_for('paciente'))
+
+
+##<---------------- FIN Editar paciente xd --------------------------------------------------------------------------------->
+    
 # Borrar a un paciente 
 @app.route('/bor_paciente/<string:id>')
 def bor_paciente(id): 
@@ -222,7 +271,12 @@ def bor_paciente(id):
     cursor.execute('delete from paciente where id_paciente ={0}'.format(id))    
     conn.commit()
     conn.close()
-    return redirect(url_for('home'))
+    return redirect(url_for('paciente'))
+
+@app.route("/alert")
+def alert():
+    return render_template('alert.html')
+
 
 # fin del programa
 if __name__ == '__main__':

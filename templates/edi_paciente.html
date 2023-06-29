@@ -6,43 +6,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar pacientes</title>
+    <title>Editar pacientes</title>
     <link rel="stylesheet" href="static/css/agr_pacientes.css" />
     <script type="text/javascript" src="/static/js/jquery-3.2.1.slim.min.js"></script>
     <script type="text/javascript" src="/static/js/popper.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>    
 </head>
 
-<body>           
-    <form action="/nuevo_paciente" method="POST" >
-        <h2>Agregar pacientes</h2>
+<body>  
+    
+    <form action="/modificar_paciente/{{paciente.0}}" method="POST" >
+        
+        <h2>Editar pacientes</h2>
         <a href='/paciente' class="btn btn-primary">Cancelar</a>
         <div class="form-group">
             <div class="center-form">
                 <div class="form-container col-4">
                     <label for="nom_cliente"> Nombre(s): </label>           
-                    <input type="text" id="nom_cliente" class="form-control" name="nom_cliente" placeholder="Nombres"required>
+                    <input type="text" id="nom_cliente" class="form-control" name="nom_cliente" placeholder="{{paciente.3}}"required>
                 </div>
                 <div class="form-container col-4">
                     <label for="ap_pa"> Apellido paterno: </label>
-                    <input type="text" id="ap_pa" class="form-control" name="ap_pa" placeholder="Apellido Paterno"required>            
+                    <input type="text" id="ap_pa" class="form-control" name="ap_pa" placeholder="{{paciente.4}}"required>            
                 </div>
                 <div class="form-container col-4">
                     <label for="ap_ma"> Apellido materno: </label>
-                    <input type="text" id="ap_ma" class="form-control" name="ap_ma"placeholder="Apellido Materno"required>
+                    <input type="text" id="ap_ma" class="form-control" name="ap_ma"placeholder="{{paciente.5}}"required>
                 </div>                    
             </div>
 
             <div class="center-form">
                 <div class="form-container">                    
                     <label for="fecha_nacimiento">Fecha Nacimiento: </label>
-                    <input type="date" id="fecha_nacimiento" class="form-control" name="fecha_nacimiento" required>
+                    <input type="date" id="fecha_nacimiento" class="form-control" name="fecha_nacimiento" value="{{paciente.6}}" required>
                 </div>
                 
                 <div class="form-container">
                     <label for="genero">Género: </label>
                     <select id="genero" class="form-control" name="genero" required>
-                        <option>Género</option>
+                        <option value="{{paciente.7}}"></option>
                         <option value="Masculino">Masculino</option>
                         <option value="Femenino">Femenino</option>
                         <option value="Otro">Otro</option>
@@ -52,7 +54,7 @@
                 <div class="form-container">
                     <label for="civil">Estado civil: </label>
                     <select id="civil" class="form-control" name="civil" required>
-                        <option>Selecciona</option>
+                        <option value="{{paciente.8}}">Selecciona</option>
                         <option value="soltero">Soltero</option>
                         <option value="casado">Casado</option>
                         <option value="divorciado">Divorciado</option>
@@ -81,7 +83,7 @@
                 <div class"">
                     <div class="form-container">                    
                         <label for="medicamentos">Medicamentos </label>
-                        <input type="text" id="medicamentos" class="form-control" name="medicamentos" placeholder="Medicamentos"required>              
+                        <input type="text" id="medicamentos" class="form-control" name="medicamentos" placeholder="{{paciente.10}}"required>              
                     </div>
                 </div>
             </div>      
@@ -89,9 +91,7 @@
         </div>
 
         <div class="center-form">   
-             
-            
-            
+
             <script type="text/javascript">
                 document.getElementById("formu").addEventListener("submit", function(event){
                     event.preventDefault(); 
@@ -99,8 +99,9 @@
                 });                                              
             </script>            
         </div>
-        <a type="button" href="/paciente"><button type="submit">Enviar</button></a>    
+        <a type="button" href="/paciente"><button type="submit">Enviar</button></a>          
     </form>
+    
 </body>
 </html>
 {% endblock %}

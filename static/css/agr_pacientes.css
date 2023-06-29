@@ -4,7 +4,7 @@ h2{
     
 }
 form {
-	background-color: #FFFFFF;
+	background-color: #f3f3f3;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -144,6 +144,20 @@ button {
 
 }
 
+.radio{
+	display: flex;
+	justify-content: center;
+	width: calc(100%);
+	height: calc(-60%);
+}
+
+.center-radio {
+	display: flex;
+	justify-content: flex-start;
+	width: auto;
+	height: auto;
+	
+}
 
 .form-center-row {
     display: flex;
