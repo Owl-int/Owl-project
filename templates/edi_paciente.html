@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,14 +8,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar pacientes</title>
-    <link rel="stylesheet" href="static/css/agr_pacientes.css" />
     <script type="text/javascript" src="/static/js/jquery-3.2.1.slim.min.js"></script>
     <script type="text/javascript" src="/static/js/popper.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>    
+    <link href="{{ url_for('static',filename='css/agr_pacientes.css') }}" rel="stylesheet" type="text/css">
+
+
 </head>
 
 <body>  
-    
+    {% for paciente in pacientes %}
+
     <form action="/modificar_paciente/{{paciente.0}}" method="POST" >
         
         <h2>Editar pacientes</h2>
@@ -23,15 +27,15 @@
             <div class="center-form">
                 <div class="form-container col-4">
                     <label for="nom_cliente"> Nombre(s): </label>           
-                    <input type="text" id="nom_cliente" class="form-control" name="nom_cliente" placeholder="{{paciente.3}}"required>
+                    <input type="text" id="nom_cliente" class="form-control" name="nom_cliente" value="{{paciente.3}}"required>
                 </div>
                 <div class="form-container col-4">
                     <label for="ap_pa"> Apellido paterno: </label>
-                    <input type="text" id="ap_pa" class="form-control" name="ap_pa" placeholder="{{paciente.4}}"required>            
+                    <input type="text" id="ap_pa" class="form-control" name="ap_pa" value="{{paciente.4}}"required>            
                 </div>
                 <div class="form-container col-4">
                     <label for="ap_ma"> Apellido materno: </label>
-                    <input type="text" id="ap_ma" class="form-control" name="ap_ma"placeholder="{{paciente.5}}"required>
+                    <input type="text" id="ap_ma" class="form-control" name="ap_ma"value="{{paciente.5}}"required>
                 </div>                    
             </div>
 
@@ -44,7 +48,7 @@
                 <div class="form-container">
                     <label for="genero">Género: </label>
                     <select id="genero" class="form-control" name="genero" required>
-                        <option value="{{paciente.7}}"></option>
+                        <option > {{paciente.7}}</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Femenino">Femenino</option>
                         <option value="Otro">Otro</option>
@@ -54,7 +58,7 @@
                 <div class="form-container">
                     <label for="civil">Estado civil: </label>
                     <select id="civil" class="form-control" name="civil" required>
-                        <option value="{{paciente.8}}">Selecciona</option>
+                        <option>{{paciente.8}}</option>
                         <option value="soltero">Soltero</option>
                         <option value="casado">Casado</option>
                         <option value="divorciado">Divorciado</option>
@@ -67,23 +71,28 @@
                 <div class="form-container">
                     <label for="regis_on" required>¿Está registrado en Owl? </label> 
                     <div class="center-radio">
-                        <input type="radio", name="regis_on" id="regis_on" value="Si">Sí</input>
-                        <input type="radio", name="regis_on" id="regis_on" value="No">No</input>                  
+                        <input type="radio" name="regis_on" id="regis_on_si" value="Si" {% if paciente.1 == 'Si' %}checked{% endif %}>
+                        <label for="regis_on_si">Sí</label>
+                        <input type="radio" name="regis_on" id="regis_on_no" value="No" {% if paciente.1 == 'No' %}checked{% endif %}>
+                        <label for="regis_on_no">No</label>
                     </div>
                 </div>
-    
+            
+
                 <div class="form-container">
                     <label for="antecedentes" required>¿Cuénta con antecedentes médicos? </label>
                     <div class="center-radio">
-                        <input type="radio", name="antecedentes" id="antecedentes" value="Si">Sí</input>
-                        <input type="radio", name="antecedentes" id="antecedentes" value="No">No</input>
+                        <input type="radio", name="antecedentes" id="antecedentes_si" value="Si" {% if paciente.9 == 'Si'%}checked {% endif %}>
+                        <label for="antecedentes_si">Sí</label>
+                        <input type="radio", name="antecedentes" id="antecedentes_no" value="No" {% if paciente.9 == 'No'%}checked {% endif %}>
+                        <label for="antecedentes_no">No</label>
                     </div>    
                 </div>
                 
                 <div class"">
-                    <div class="form-container">                    
+                    <div class="form-container">                     
                         <label for="medicamentos">Medicamentos </label>
-                        <input type="text" id="medicamentos" class="form-control" name="medicamentos" placeholder="{{paciente.10}}"required>              
+                        <input type="text" id="medicamentos" class="form-control" name="medicamentos" value="{{paciente.10}}"required>              
                     </div>
                 </div>
             </div>      
@@ -99,9 +108,9 @@
                 });                                              
             </script>            
         </div>
-        <a type="button" href="/paciente"><button type="submit">Enviar</button></a>          
+        <a type="button" href="/paciente"><button type="submit">Guardar</button></a>          
     </form>
-    
+    {% endfor %}
 </body>
 </html>
 {% endblock %}

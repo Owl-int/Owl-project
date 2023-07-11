@@ -4,6 +4,8 @@ from functools import wraps
 from flask_mysqldb import MySQL,MySQLdb
 import pymysql
 
+#from werkzeug.security import generate_password_hash, check_password_hash
+
 # Nombre de la aplicación para la ejecución 
 app = Flask(__name__)
 
@@ -144,12 +146,15 @@ def login():
         # En caso de que el usuario sea un administrador, el array usuario se establece como admin
         elif (usuario=='admin'):
             session['admin']=usuario[0]                    
+            print('sesión: ', session)
             return render_template('index.html')
         
         # En caso de que sea un usuario común, la sesión se establece como usuario 
         else:            
             session['id_usuario']=usuario[0]     
-            return render_template('index.html')        
+            print('sesión: ', session)
+            return render_template('index.html')
+                
     return render_template('login.html')
 
 # Conseguir el id de la sesión de la variable "session" dejada 
@@ -224,19 +229,17 @@ def ed_paciente(id):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
     cursor = conn.cursor()
     
-    cursor.execute(' select id_paciente, nombre_cliente, ap_pa, ap_ma, fecha_nacimiento, genero, id_usuario '
-                   ' from Paciente '
-                   ' where id_paciente and id_usuario=%s', (id, id_aux))
+    cursor.execute(' select * from Paciente '
+                   ' where id_paciente=%s and id_usuario=%s', (id, id_aux))
     
     datos = cursor.fetchall()           
     conn.commit()
     conn.close()
-    return render_template('edi_paciente.html', paciente=datos)
+    return render_template('edi_paciente.html', pacientes=datos)
 
 
 @app.route("/modificar_paciente/<string:id>", methods=['GET', 'POST'])
 def modificar_paciente(id): 
-    get_user()
     if request.method=='POST':
         aux_regis = request.form ['regis_on']
         aux_nombre_paciente = request.form['nom_cliente']
@@ -248,16 +251,15 @@ def modificar_paciente(id):
         aux_antecedentes = request.form['antecedentes']    
         aux_medicamentos = request.form['medicamentos']
         
-        id_aux=g.id_us
-        
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
         cursor = conn.cursor()
         
-        cursor.execute(' update nombre_cliente=%s, ap_pa=%s, ap_ma=%s, fecha_nacimiento=%s, genero=%s'
-                       ' from Paciente where id_paciente=%s and id_usuario=%s', (aux_regis, aux_nombre_paciente, 
-                        aux_ap_pa, aux_ap_ma, aux_fecha_nacimiento, aux_genero, aux_civil, aux_antecedentes, 
-                        aux_medicamentos, id, id_aux))
+        cursor.execute(' update Paciente set registro_online=%s, nombre_cliente=%s, ap_pa=%s, ap_ma=%s, fecha_nacimiento=%s, genero=%s, estado_civil=%s, '
+                       ' antecedentes_medicos=%s, medicamentos_actuales=%s '
+                       ' where id_paciente=%s', (aux_regis, aux_nombre_paciente, aux_ap_pa, 
+                        aux_ap_ma, aux_fecha_nacimiento, aux_genero, aux_civil, aux_antecedentes, aux_medicamentos, id))
         conn.commit()
+        conn.close()
         return redirect(url_for('paciente'))
 
 
