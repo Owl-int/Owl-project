@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar clinica</title>
+    <link rel="stylesheet" href="static/css/agr_pacientes.css" />
+    <script type="text/javascript" src="/static/js/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript" src="/static/js/popper.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>    
+</head>
+
+<body>           
+    <form action="/nueva_clinica" method="POST" >
+        <h2>Agregar clinica</h2>
+        <a href='/clinica' class="btn btn-primary">Cancelar</a>
+        <div class="form-group">
+            <div class="center-form">
+                <div class="form-container col-6">
+                    <label for="nombre"> Nombre de la instutución </label>           
+                    <input type="text" id="nombre" class="form-control" name="nombre" placeholder="Nombre de la instutución"required>
+                </div>
+                <div class="form-container col-6">
+                    <label for="descripcion"> Descripción </label>
+                    <input type="text" id="descripcion" class="form-control" name="descripcion" placeholder="Descripción"required>            
+                </div>
+            </div>
+            <div class="center-form">
+                <div class="form-container col-6">
+                    <label for="direccion"> Dirección </label>
+                    <input type="text" id="direccion" class="form-control" name="direccion"placeholder="Dirección"required>
+                </div>     
+                
+                <div class="form-container col-6">                    
+                    <label for="num_telefono">Numero de telefono </label>
+                    <input type="tel" id="num_telefono" class="form-control" name="num_telefono" placeholder="(499) xxx xxxx" required>
+                </div>                 
+            </div>            
+        </div>
+        <div class="center-form">                   
+            <script type="text/javascript">
+                document.getElementById("formu").addEventListener("submit", function(event){
+                    event.preventDefault(); 
+                    window.location.href ='/clinica';   
+                });                                              
+            </script>            
+        </div>
+        <a type="button" href="/clinica"><button type="submit">Enviar</button></a>    
+        <br><br><br><br><br><br><br><br>
+    </form>
+</body>
+</html>
+{% endblock %}

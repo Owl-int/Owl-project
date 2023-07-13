@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<head>
+    <title>OWL</title>
+    <link rel="stylesheet" href="static/css/tabla3.css">    
+</head>
+
+<body style="background-color:#F6F6F6;">
+    <center>
+        <br>
+        <br>
+        <script type="text/javascript" src="/static/js/jquery-3.2.1.slim.min.js"></script>
+        <script type="text/javascript" src="/static/js/popper.min.js"></script>
+        <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+
+        <center>
+            <h3>Profesionales</h3>
+            <div id="alertPlaceholder"></div>
+        </center>
+        <center>
+            <a href='/nuevo_profesional' class="btn btn-primary">Agregar a un profesional</a>
+        </center>
+        <center>
+            <table class="content-table">
+                <thead>
+                    <tr>
+                        <th>Nombre del profesional</th>
+                        <th>Especialidad</th>
+                        <th>Clínica</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profesional in profesionales %}
+                    <tr>
+                        <td>
+                            {{ profesional.1 + ' '+ profesional.2}}
+                        </td>
+                        <td>
+                            {{profesional.3}}
+                        </td>
+                        <td>
+                            {{profesional.8}}
+                        </td>
+
+                        <td bgcolor="#828282" width="60">
+                            <!--/ed_profesional/{{profesional.0}}-->
+                            <center><a href="/edi_profesional/{{profesional.0}}" style="color:#FFFFFF; text-decoration:none;">Editar &nbsp;<i class="far fa-edit"></i></a></center>
+                        </td>
+                        <td bgcolor="#FFF5757" width="60">
+                            <!-- /bor_profesional/{{profesional.0}} -->
+                            <center><a href="#" style="color:#FFFFFF; text-decoration:none;" onclick="confirmarEliminacion('{{ profesional.0 }}')">Borrar &nbsp;<i class="fas fa-trash-alt"></i></a></center>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </center>
+    </center>
+    
+    <script>
+
+        window.addEventListener('load', function() {
+            // Aquí puedes realizar las acciones que deseas cuando se agrega un registro.
+            alert('Se ha agregado un nuevo registro.');
+        });
+
+        function confirmarEliminacion(profesionalId) {
+            if (confirm('¿Estás seguro de que deseas eliminar este dato?')) {
+                window.location.href = '/bor_profesional/' + profesionalId;
+            }
+        }
+    </script> 
+    <script type="text/javascript" src="/static/js/mostrar_alert.js"></script>
+</body>
+
+{% endblock %}

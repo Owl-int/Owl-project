@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar clinica</title>
+    <link rel="stylesheet" href="static/css/agr_pacientes.css" />
+    <script type="text/javascript" src="/static/js/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript" src="/static/js/popper.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>   
+    <link href="{{ url_for('static',filename='css/agr_pacientes.css') }}" rel="stylesheet" type="text/css"> 
+</head>
+
+<body>           
+    {% for clinica in clinicas %}
+
+    <form action="/modificar_clinica/{{clinica.0}}" method="POST" >
+        <h2>Agregar clinica</h2>
+        <a href='/clinica' class="btn btn-primary">Cancelar</a>
+        <div class="form-group">
+            <div class="center-form">
+                <div class="form-container col-6">
+                    <label for="nombre"> Nombre de la instutución </label>           
+                    <input type="text" id="nombre" class="form-control" name="nombre" value="{{clinica.1}}"required>
+                </div>
+                <div class="form-container col-6">
+                    <label for="descripcion"> Descripción </label>
+                    <input type="text" id="descripcion" class="form-control" name="descripcion" value="{{clinica.2}}"required>            
+                </div>
+            </div>
+            <div class="center-form">
+                <div class="form-container col-6">
+                    <label for="direccion"> Dirección </label>
+                    <input type="text" id="direccion" class="form-control" name="direccion"value="{{clinica.3}}"required>
+                </div>     
+                
+                <div class="form-container col-6">                    
+                    <label for="num_telefono">Numero de telefono </label>
+                    <input type="tel" id="num_telefono" class="form-control" name="num_telefono" value="{{clinica.4}}" required>
+                </div>                 
+            </div>            
+        </div>
+        <div class="center-form">                   
+            <script type="text/javascript">
+                document.getElementById("formu").addEventListener("submit", function(event){
+                    event.preventDefault(); 
+                    window.location.href ='/clinica';   
+                });                                              
+            </script>            
+        </div>
+        <a type="button" href="/clinica"><button type="submit">Enviar</button></a>    
+        <br><br><br><br><br><br><br><br>
+    </form>
+    {% endfor %}
+</body>
+</html>
+{% endblock %}

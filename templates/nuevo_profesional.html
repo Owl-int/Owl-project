@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar pacientes</title>
+    <link rel="stylesheet" href="static/css/agr_pacientes.css" />
+    <script type="text/javascript" src="/static/js/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript" src="/static/js/popper.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>    
+</head>
+
+<body>           
+    <form action="/nuevo_profesional" method="POST" >
+        <h2>Agregar profesional</h2>
+        <a href='/profesional' class="btn btn-primary">Cancelar</a>
+        <div class="form-group">
+            <div class="center-form">
+                <div class="form-container col-4">
+                    <label for="nom"> Nombre(s): </label>           
+                    <input type="text" id="nom" class="form-control" name="nom" placeholder="Nombre(s)"required>
+                </div>
+                <div class="form-container col-4">
+                    <label for="ap"> Apellido(s): </label>
+                    <input type="text" id="ap" class="form-control" name="ap" placeholder="Apellido(s)"required>            
+                </div>
+                <div class="form-container col-4">
+                    <label for="especialidad"> Especialidad: </label>
+                    <input type="text" id="especialidad" class="form-control" name="especialidad"placeholder="Especialidad"required>
+                </div>                    
+            </div>
+
+            <div class="center-form">
+                <div class="form-container">                    
+                    <label for="num_telefono">Numero de telefono </label>
+                    <input type="tel" id="num_telefono" class="form-control" name="num_telefono" placeholder="(499) xxx xxxx" required>
+                </div>
+                
+                <div class="form-container">                    
+                    <label for="correo">Correo electronico </label>
+                    <input type="email" id="correo" class="form-control" name="correo" placeholder="correo@gmail.com" required>
+                </div>
+
+                <div class="form-container">
+                    <label for="horario">Horario </label>
+                    <select id="horario" class="form-control" name="horario" required>
+                        <option>Horario</option>
+                        {%
+                            for hor in horario
+                        %}
+                            <option value="{{ hor.0 }}">{{ hor.1 }}</option>
+                       {%   endfor %}
+                    </select>
+                </div> 
+            </div>
+            <div class="center-form">
+                <div class="form-container col-6">
+                    <label for="cedula_profesional"> Cedula profesional: </label>
+                    <input type="text" id="cedula_profesional" class="form-control" name="cedula_profesional" placeholder="0000000"required>
+                </div>
+
+                <div class="form-container col-6">
+                    <label for="clinica">Clínica </label>
+                    <select id="clinica" class="form-control" name="clinica" required>
+                        <option>Clínica</option>
+                        {%
+                            for clic in clinica
+                        %}
+                            <option value="{{ clic.1 }}">{{ clic.1 }}</option>
+                       {%   endfor %}
+                    </select>
+                </div> 
+            </div>
+
+            <div>              
+                <script type="text/javascript">
+                    document.getElementById("formu").addEventListener("submit", function(event){
+                        event.preventDefault(); 
+                        window.location.href ='/profesional';   
+                    });                                              
+                </script>            
+            </div>
+            <div>
+                <a type="button" href="/profesional"><button type="submit">Enviar</button></a>    
+            </div>
+        </div>
+    </form>
+    <br><br><br><br><br><br>
+</body>
+</html>
+{% endblock %}

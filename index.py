@@ -15,7 +15,7 @@ app.secret_key = 'mysecretkey'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'owldb_v1'
+app.config['MYSQL_DB'] = 'owldb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
@@ -61,7 +61,7 @@ def login_required(f):
         
         # Hace la validación del usuario llenando los parámtros de la clase users con las tuplas 
         # de la tabla usuario en la db
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')
         cursor = conn.cursor()
         cursor.execute('select id_usuario, nom_usuario, correo, passw from usuarios where id_usuario=%s', 
                        (session['id_usuario']))
@@ -86,7 +86,7 @@ def singup():
         aux_correo = request.form['correo']
         aux_passw = request.form['passw']
         
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1' )
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb' )
         cursor = conn.cursor()
         # Tomar únicamente los usuarios para comprobar si existe (probablemente se pueda simplificar
         # en una sola linea de código )
@@ -131,7 +131,7 @@ def login():
     if request.method=='POST':
         correo = request.form['correo']
         passw = request.form['passw']
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1' )
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb' )
         cursor = conn.cursor()
         #Verificación de usario 
         cursor.execute('select id_usuario, nom_usuario, passw from usuarios where correo=%s and passw=%s', (correo, passw))
@@ -170,16 +170,21 @@ def get_user():
 # limpia la sesión y a los usuarios
 @app.route('/logout')
 def logout():
-    session.clear()
-    users.clear()
-    return render_template("login.html")
+    if (session == None): 
+        return redirect(url_for('login'))
+    else: 
+        session.clear()
+        users.clear()
+        return redirect(url_for('login'))    
+    
+#<----------------  Paciente --------------------------------------------------------------------------------->
 
 # Módulo de pacientes 
 @app.route('/paciente')
 @login_required #Comprobar la sesión
 def paciente():        
     get_user() # Tomar el id del usuario
-    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')
     cursor = conn.cursor()  
     id_aux = g.id_us # Definir el id como parámetro condiconal 
 
@@ -206,9 +211,8 @@ def nuevo_paciente():
         aux_antecedentes = request.form['antecedentes']    
         aux_medicamentos = request.form['medicamentos']
         
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')        
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
         cursor = conn.cursor()
-                
         
         cursor.execute( ' INSERT INTO Paciente (registro_online, id_usuario, nombre_cliente, '
                         ' ap_pa, ap_ma, fecha_nacimiento, genero, estado_civil, antecedentes_medicos, '
@@ -216,17 +220,16 @@ def nuevo_paciente():
                         (aux_regis, id_aux, aux_nombre_paciente, aux_ap_pa, aux_ap_ma, aux_fecha_nacimiento,
                         aux_genero, aux_civil, aux_antecedentes, aux_medicamentos))
         conn.commit()
-        conn.close()        
+        conn.close() 
+        return redirect('paciente')       
     return render_template("nuevo_paciente.html")
     
-#<----------------  Editar paciente xd --------------------------------------------------------------------------------->
-
 # Editar paciente
 @app.route("/ed_paciente/<string:id>")
 def ed_paciente(id):
     get_user()
     id_aux = g.id_us
-    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')
     cursor = conn.cursor()
     
     cursor.execute(' select * from Paciente '
@@ -251,7 +254,7 @@ def modificar_paciente(id):
         aux_antecedentes = request.form['antecedentes']    
         aux_medicamentos = request.form['medicamentos']
         
-        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')
         cursor = conn.cursor()
         
         cursor.execute(' update Paciente set registro_online=%s, nombre_cliente=%s, ap_pa=%s, ap_ma=%s, fecha_nacimiento=%s, genero=%s, estado_civil=%s, '
@@ -262,22 +265,198 @@ def modificar_paciente(id):
         conn.close()
         return redirect(url_for('paciente'))
 
-
-##<---------------- FIN Editar paciente xd --------------------------------------------------------------------------------->
-    
 # Borrar a un paciente 
 @app.route('/bor_paciente/<string:id>')
 def bor_paciente(id): 
-    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb_v1')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()    
-    cursor.execute('delete from paciente where id_paciente ={0}'.format(id))    
+    cursor.execute(' delete from paciente where id_paciente ={0}'.format(id))    
     conn.commit()
     conn.close()
     return redirect(url_for('paciente'))
 
-@app.route("/alert")
-def alert():
-    return render_template('alert.html')
+
+##-----------------------------Clinicasxd--------------------------------------------------------------------------------##
+@app.route("/clinica", methods=['GET', 'POST'])
+@login_required
+def clinica():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor() 
+    cursor.execute(' Select * from Clinicas ')
+    datos = cursor.fetchall()
+    conn.commit()
+    return render_template('clinicas.html', clinicas=datos)
+
+@app.route("/nueva_clinica", methods=['GET', 'POST'])
+def nueva_clinica():
+    if request.method == 'POST': 
+        aux_nombre = request.form['nombre']
+        aux_descripcion = request.form['descripcion']
+        aux_direccion = request.form['direccion']
+        aux_num_telefono = request.form['num_telefono']
+        
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+        cursor = conn.cursor() 
+        cursor.execute (' insert into Clinicas (nombre, descripcion, direccion, num_tel) VALUES '
+                        ' (%s, %s, %s, %s)', (aux_nombre, aux_descripcion, aux_direccion, aux_num_telefono))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('clinica'))
+    return render_template('nueva_clinica.html')
+
+@app.route("/edi_clinica/<string:id>")
+def edi_clinica(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor() 
+    cursor.execute(' Select * from clinicas where id_clinica=%s', (id))
+    datos = cursor.fetchall()
+    return render_template('edi_clinica.html', clinicas=datos)
+
+
+@app.route("/modificar_clinica/<string:id>", methods=['GET', 'POST'])
+def modificar_clinica(id):
+    if request.method == 'POST': 
+        aux_nombre = request.form['nombre']
+        aux_descripcion = request.form['descripcion']
+        aux_direccion = request.form['direccion']
+        aux_num_telefono = request.form['num_telefono']
+        
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+        cursor = conn.cursor() 
+        cursor.execute('Update Clinicas set nombre=%s, descripcion=%s, direccion=%s, num_tel=%s where id_clinica=%s', 
+                       (aux_nombre, aux_descripcion, aux_direccion, aux_num_telefono, id))
+        conn.commit()
+        conn.close()    
+        return redirect(url_for('clinica'))
+
+@app.route('/bor_clinica/<string:id>')
+def bor_clinica(id): 
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor()    
+    cursor.execute(' delete from clinicas where id_clinica ={0}'.format(id))    
+    conn.commit()
+    conn.close()
+    return redirect(url_for('clinica'))
+
+
+
+##-----------------------------Profesional encargado--------------------------------------------------------------------------------##
+@app.route("/profesional", methods=['GET', 'POST'])
+@login_required
+def profesional(): 
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor() 
+    cursor.execute('Select * from profesional_encargado')
+    datos = cursor.fetchall()
+    conn.commit()
+    conn.close()
+    return render_template('profesional.html', profesionales=datos)
+
+@app.route("/nuevo_profesional", methods=['GET', 'POST'])
+def nuevo_profesional(): 
+    get_user
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor()    
+    cursor.execute ('Select * from horario')
+    datos=cursor.fetchall()
+    
+    cursor.execute('Select * from Clinicas')
+    datos2=cursor.fetchall()
+    
+    if request.method == "POST": 
+        aux_nom = request.form['nom']
+        aux_ap = request.form['ap']
+        aux_especialidad = request.form['especialidad']
+        aux_cedula_profesional = request.form['cedula_profesional']
+        aux_num_telefono = request.form['num_telefono']
+        aux_correo = request.form['correo']
+        aux_horario = request.form['horario']
+        aux_clinica = request.form['clinica']
+        
+        cursor.execute(' INSERT INTO profesional_encargado '
+                       ' (nom, ap, especialidad, cedula_profesional, num_telefono, correo_elec, horario, nom_clinica) '
+                       ' VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
+                       (aux_nom, aux_ap, aux_especialidad, aux_cedula_profesional, aux_num_telefono, aux_correo, 
+                        aux_horario, aux_clinica))
+        conn.commit()        
+        conn.close()
+        return redirect(url_for('profesional'))
+    return render_template ('nuevo_profesional.html', horario=datos, clinica=datos2)
+
+@app.route("/edi_profesional/<string:id>")
+def edi_profesional(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor()    
+    cursor.execute ('Select * from profesional_encargado where id_pro=%s', (id))
+    datos = cursor.fetchall()
+    cursor.execute ('Select * from horario')
+    datos2 = cursor.fetchall()
+    cursor.execute('select * from Clinicas')
+    datos3 = cursor.fetchall()
+    return render_template('edi_profesional.html', profesionales=datos, horarios=datos2, clinicas=datos3)
+
+@app.route("/modificar_profesional/<string:id>", methods=['GET','POST'])
+def modificar_profesional(id):    
+    if request.method == 'POST': 
+        aux_nom = request.form['nom']
+        aux_ap = request.form['ap']
+        aux_especialidad = request.form['especialidad']
+        aux_cedula_profesional = request.form['cedula_profesional']
+        aux_num_telefono = request.form['num_telefono']
+        aux_correo = request.form['correo']
+        aux_horario = request.form['horario']
+        aux_clinica = request.form['clinica']
+        
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+        cursor = conn.cursor()
+        
+        cursor.execute(' UPDATE Profesional_encargado SET nom=%s, ap=%s, especialidad=%s,    '
+                       ' cedula_profesional=%s, num_telefono=%s, correo_elec=%s, horario=%s, '
+                       ' nom_clinica=%s WHERE id_pro=%s', (aux_nom, aux_ap, aux_especialidad,
+                        aux_cedula_profesional, aux_num_telefono, aux_correo, aux_horario, aux_clinica, id))
+        conn.commit()
+        conn.close()
+        
+        return redirect(url_for('profesional'))
+     
+@app.route('/bor_profesional/<string:id>')
+def bor_profesional(id): 
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor()    
+    cursor.execute(' delete from profesional_encargado where id_pro ={0}'.format(id))    
+    conn.commit()
+    conn.close()
+    return redirect(url_for('profesional'))
+
+
+
+##-----------------------------Citas--------------------------------------------------------------------------------##
+@app.route("/citas", methods=['GET', 'POST'])
+@login_required #Comprobar la sesión
+def citas(): 
+    get_user()
+    id_us=g.id_us
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor()  
+    cursor.execute(' Select * from citas where id_usuario=%s ', (id_us))  
+    datos = cursor.fetchall()
+    conn.commit()
+    conn.close()        
+    return render_template('citas.html', citas=datos)
+
+@app.route('/nueva_cita', methods=['GET', 'POST'])
+def nueva_cita(): 
+    get_user()
+    if request.method == 'POST': 
+        id_us=g.id_us
+        
+        return render_template('nueva_cita.html')
+
+##-----------------------------Articulos--------------------------------------------------------------------------------##
+
+@app.route("/articulo_psico")
+def articulo_psico():
+    return render_template('articulo_psico.html')
 
 
 # fin del programa
