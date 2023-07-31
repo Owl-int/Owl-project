@@ -64,6 +64,7 @@ button {
     justify-content: center;
     align-items: center;
     height: auto;
+	
 }
 
 .horz-form{
@@ -144,7 +145,6 @@ button {
 
 }
 
-
 .form-center-row {
     display: flex;
 	position: relative;
@@ -152,5 +152,12 @@ button {
 	height: calc(5%);
 	margin: 20px auto;
 	padding: 30px 10px 10px;
-	
+}
+
+
+.tittle_pos {
+	justify-content: left;
+	justify-self: left;
+	width: calc(-20%);
+
 }

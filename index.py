@@ -2,10 +2,11 @@
 from flask import Flask, g, render_template, request, redirect, url_for, session, json, jsonify
 from functools import wraps
 from flask_mysqldb import MySQL,MySQLdb
+from datetime import date, datetime
 import pymysql
 
-#from werkzeug.security import generate_password_hash, check_password_hash
 
+#from werkzeug.security import generate_password_hash, check_password_hash
 # Nombre de la aplicación para la ejecución 
 app = Flask(__name__)
 
@@ -33,6 +34,24 @@ class User:
 #Objeto de la clase usuarios
 users=[]
 no_auth_routes = ['login', 'singup','/']#No necesitan permisos
+
+#Clase obtener fechas y parámetros de una fecha 
+class Date(): 
+    def get_date_actual(): 
+        g.fecha_actual = date.today()  # Obtener la fecha actual
+        return (g.fecha_actual)
+    # Instanciar
+    # Date.get_date_actual()
+    
+    def get_date_year(): 
+        fecha_actual = date.today()
+        anio = fecha_actual.year
+        if anio is not None and (anio, (int, float)):
+            g.anio=int(anio)
+            return print(g.anio)
+        return (g.anio)
+    # Instanciar
+    # Date.get_date_year()
 
 # Inicio de la web (index, hub, hobby)
 @app.route('/',methods=['GET','POST'])
@@ -165,6 +184,8 @@ def get_user():
         g.id_us=int(id)
         return print(g.id_us)
     return g.id_us
+
+
 
 # Cerrar sesión
 # limpia la sesión y a los usuarios
@@ -444,13 +465,127 @@ def citas():
     conn.close()        
     return render_template('citas.html', citas=datos)
 
+#Inicializar variables globales
+def inicializar_variables(): 
+    g.mensaje = None 
+
+# Nueva citas
 @app.route('/nueva_cita', methods=['GET', 'POST'])
 def nueva_cita(): 
+    Date.get_date_year()
     get_user()
+    inicializar_variables()
+    
+    id_us=g.id_us
+    anio_actual=g.anio
+    
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor()  
+    cursor.execute(' Select * from Paciente where id_usuario=%s', (id_us))
+    datos1=cursor.fetchall()
+    cursor.execute(' Select * from profesional_encargado ')
+    datos2=cursor.fetchall()
+    cursor.execute(' Select * from clinicas ')
+    datos3=cursor.fetchall()
+    
     if request.method == 'POST': 
-        id_us=g.id_us
+        aux_nom_paciente = request.form['nom_paciente']
+        aux_nom_profesional = request.form['nom_profesional']
+        aux_fecha = request.form['fecha']
+        aux_hora = request.form['hora']
+        aux_descripcion = request.form['descripcion']
+        aux_clinica = request.form['clinica']
         
-        return render_template('nueva_cita.html')
+        cursor.execute(' Select nombre_cliente, ap_pa, ap_ma from paciente where nombre_cliente=%s', (aux_nom_paciente))
+        datos5=cursor.fetchall()
+        if datos5: 
+            nombre_paciente, ap_pa, ap_ma = datos5[0]
+            nom_pac_str = str(nombre_paciente)
+            ap_pa_str = str(ap_pa)
+            ap_ma_str = str(ap_ma)
+            full_name_a = (nom_pac_str, ' ' ,ap_pa_str, ' ', ap_ma_str)
+            full_name=("".join(full_name_a))
+            print(full_name)
+        else: 
+            print('No se pudo encontrar el nombre completo')    
+            
+        cursor.execute (' Select nom, ap from profesional_encargado where nom=%s ', (aux_nom_profesional))
+        datos6=cursor.fetchall()
+        if datos6: 
+            nom, ap = datos6[0]
+            nom_str = str(nom)
+            ap_str = str(ap)
+            full_name_pro_a = (nom_str, ' ', ap_str)
+            full_name_pro = ("".join(full_name_pro_a))
+            print (full_name_pro)
+        
+        cursor.execute(' Select fecha_nacimiento from paciente where nombre_cliente=%s', (aux_nom_paciente))
+        dato4=cursor.fetchone()
+        conn.commit()
+        
+        if dato4:
+            fecha_nac = dato4[0]
+            print(fecha_nac)
+            anio_nac = fecha_nac.year
+            if anio_nac is not None and (anio_nac, (int, float)):
+                anio_nac=int(anio_nac)
+                print('anio_nac:', anio_nac)
+        
+        comprobar_edad= (anio_actual - anio_nac) #Variable para el año de nacimiento del paciente
+        print('Comprobar edad: ',comprobar_edad)
+        
+        if (comprobar_edad<=18): 
+            alerta=('Concentimiento para menores de edad')            
+        else: 
+            alerta=('Concentimiento para mayores de edad')
+        print('Alerta: ', alerta)
+        g.mensaje=alerta
+        
+        cursor.execute(' Select count(*) from citas where fecha=%s and hora=%s', (aux_fecha, aux_hora))
+        fechhora= cursor.fetchall()  
+        
+        if (fechhora[0][0] !=0): 
+            error="Fecha y hora no disponibles"
+            return render_template("error_usuario.html", des_error=error, paginaant='/nueva_cita')
+        
+        else:
+            cursor.execute(' Insert into citas (descripcion, fecha, hora, id_usuario, '
+                        ' nom_paciente, nom_profesional, nom_clinica) VALUES '
+                        '(%s, %s, %s, %s, %s, %s, %s) ',
+                        (aux_descripcion, aux_fecha, aux_hora, id_us, full_name, full_name_pro, aux_clinica))
+            conn.commit()
+            conn.close()
+        return redirect(url_for('citas'))
+    return render_template('nueva_cita.html', pacientes=datos1, profesionales=datos2, clinicas=datos3)
+
+
+# Obtener mensaje 
+@app.route('/obtener_mensaje')
+def obtener_mensaje(): 
+    inicializar_variables()
+    ob_mensaje = {'mensaje': g.mensaje }
+    return jsonify(ob_mensaje)
+
+
+@app.route('/bor_cita/<string:id>')
+def bor_cita(id): 
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor()    
+    cursor.execute(' delete from citas where id_cita ={0}'.format(id))    
+    conn.commit()
+    conn.close()
+    return redirect(url_for('citas'))
+
+@app.route('/ver_cita/<string:id>', methods=['GET', 'POST'])
+def ver_cita(id): 
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor()   
+    cursor.execute( 'Select * from citas where id_cita=%s', (id))
+    datos = cursor.fetchall()
+    conn.commit()
+    conn.close()
+    return render_template('ver_cita.html', citas=datos) 
+
 
 ##-----------------------------Articulos--------------------------------------------------------------------------------##
 

@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Cita</title>
+    <link rel="stylesheet" href="static/css/agr_pacientes.css" />   
+    <script type="text/javascript" src="/static/js/alert_confirmacion.js"></script>
+    <link href="{{ url_for('static',filename='css/agr_pacientes.css') }}" rel="stylesheet" type="text/css">    
+    
+    
+</head>
+<body style="background-color:#F6F6F6;">
+    <center>
+        <br>
+        <br>
+        <script type="text/javascript" src="/static/js/jquery-3.2.1.slim.min.js"></script>
+        <script type="text/javascript" src="/static/js/popper.min.js"></script>
+        <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+        {% for cita in citas %}
+        <center>
+            <h3 class="tittle_inline">Cita de: </h3>
+            <h3  style="display: inline;" class="tittle_color">{{cita.5}}</h3>
+            
+            <div id="alertPlaceholder"></div>
+            <br>
+        </center>
+
+        <h5 class="tittle_pos"> Perfil clínico </h5> 
+        <center>
+            <table class="content-table">
+                <thead>
+                    <tr>
+                        <th>Nombre del paciente</th>      
+                        <th>Fecha</th>                                          
+                        <th>Hora</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cita in citas %}
+                    <tr>
+                        <td>
+                            {{ cita.5}}
+                        </td>
+                        <td>
+                            {{ cita.2 }}
+                        </td>
+                        <td>
+                            {{ cita.3 }}
+                        </td>
+                        <!--
+                        <td bgcolor="#828282" width="60">
+                            <center><a href="/ver_cita/{{cita.0}}" style="color:#FFFFFF; text-decoration:none;">Ver &nbsp;<i class="far fa-edit"></i></a></center>
+                        </td>
+                        <td bgcolor="#FFF5757" width="60">
+                            <center><a href="#" style="color:#FFFFFF; text-decoration:none;" onclick="confirmarEliminacion('{{ cita.0 }}')">Borrar &nbsp;<i class="fas fa-trash-alt"></i></a></center>
+                        </td>
+                        -->
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </center>
+    </center>
+
+    <center>
+            <h3 class="tittle_inline">Institución: </h3>
+            <h3  style="display: inline;" class="tittle_color">{{cita.7}}</h3>
+            
+            <div id="alertPlaceholder"></div>
+            <br>
+        </center>
+
+        <h5 class="tittle_pos"> Perfil clínico </h5> 
+        <center>
+            <table class="content-table">
+                <thead>
+                    <tr>
+                        <th>Nombre del especialista</th>      
+                        <th>Institución</th>                                          
+                        <th></th>
+                        <th></th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cita in citas %}
+                    <tr>
+                        <td>
+                            {{ cita.6 }}
+                        </td>
+                        <td>
+                            {{ cita.7 }}
+                        </td>
+                        
+                        <!--
+                        <td bgcolor="#828282" width="60">
+                            <center><a href="/ver_cita/{{cita.0}}" style="color:#FFFFFF; text-decoration:none;">Ver &nbsp;<i class="far fa-edit"></i></a></center>
+                        </td>
+                        <td bgcolor="#FFF5757" width="60">
+                            <center><a href="#" style="color:#FFFFFF; text-decoration:none;" onclick="confirmarEliminacion('{{ cita.0 }}')">Borrar &nbsp;<i class="fas fa-trash-alt"></i></a></center>
+                        </td>
+                        -->
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </center>
+    </center>
+
+    <center>
+        <a href='/citas' class="btn btn-primary">Volver</a>
+    </center>
+    <script type="text/javascript" src="/static/js/mostrar_alert.js"></script>
+</body>
+{% endfor %}
+{% endblock %}

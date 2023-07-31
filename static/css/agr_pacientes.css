@@ -45,8 +45,6 @@ button {
 	transition: transform 80ms ease-in;
 }
 
-
-
 .form-container {
 	position: absolute;
 	top: 0;
@@ -167,4 +165,21 @@ button {
 	margin: 20px auto;
 	padding: 30px 10px 10px;
 	
+}
+
+.tittle_color{
+	color: #007BFF; 
+}
+
+.tittle_inline{
+	display: inline-block;
+}
+
+
+.tittle_pos {
+	justify-content: left;
+	justify-self: left;
+	display: flex;
+	padding-left: 27.5%;
+
 }

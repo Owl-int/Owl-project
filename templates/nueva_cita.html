@@ -7,69 +7,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agendar Cita</title>
-    <link rel="stylesheet" href="static/css/cita.css" />
+    <link rel="stylesheet" href="static/css/agr_pacientes.css" />
     <script type="text/javascript" src="/static/js/jquery-3.2.1.slim.min.js"></script>
     <script type="text/javascript" src="/static/js/popper.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>    
+    <script type="text/javascript" src="/static/js/alert_confirmacion.js"></script>    
 </head>
 
 <body>  
-    
-    <form>
-        
+    <form id="nueva-cita-form" action="/nueva_cita", method='POST'>        
         <h2>Agendar Cita</h2>
-        <!--<a href='/paciente' class="btn btn-primary">Cancelar</a>-->
-        <div class="form-group">
+        <a href='/citas' class="btn btn-primary">Cancelar</a>
+        <div class="form-container">
             <div class="center-form">
-                <div class="form-container col-9">
-                    <label for="nom_paciente"> Nombre Completo: </label>           
-                    <input type="text" id="nom_paciente" class="form-control" name="nom_paciente" required>
-                </div> 
-                <div class="form-container col-9">
-                    <label for="id_profesional"> Profesional: </label>           
-                    <input type="text" id="id_profesional" class="form-control" name="id_profesional" required>
-                </div>                 
-            </div>
+                <div class="col-lg-12">
+                    <div>
+                        <label for="nom_paciente"> Nombre Completo: </label>           
+                        <select id="nom_paciente" class="form-control" name="nom_paciente" required>
+                            <option>Nombre del paciente</option>
+                            {%
+                                for paciente in pacientes
+                            %}
+                                <option value="{{ paciente.3 }}">{{ paciente.3 + ' ' + paciente.4 + ' ' + paciente.5}}</option>
+                                
+                            {% endfor %}
+                        
+                        </select>
+                    </div>
 
-            <div class="form-group">
-                <div class="center-form">
-                    <div class="form-container col-9">
-                        <label for="fecha"> Fecha: </label>
-                    <input type="date" id="fecha" class="form-control" name="fecha" required>   
-                    </div>   
-                    <div class="form-container col-9">
-                        <label for="id_horario"> Horario: </label>
-                        <input type="time" id="id_horario" class="form-control" name="id_horario" required>
-                    </div>     
-                </div> 
-            </div>
+                    <div>
+                        <label for="clinica">Clínica </label>
+                        <select id="clinica" class="form-control" name="clinica" required>
+                            <option>Clínica</option>
+                            {%
+                                for clic in clinicas
+                            %}
+                                <option value="{{ clic.1 }}">{{ clic.1 }}</option>
+                           {%   endfor %}
+                        </select>
+                    </div>  
 
-
-            <div class="center-form">
-                <div class="form-container col-8">
-                    <label for="nom_clinica"> Clínica: </label>
-                    <select id="nom_clinica" class="form-control" name="nom_clinica" required>
-                        <option value="Selecciona">Selecciona</option>
-                        <option value="Selecciona">Selecciona</option>
-                        <option value="Selecciona">Selecciona</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                </div>     
-                <div class="form-container col-7">                    
-                    <label for="descripcion"> Descripción </label>
-                    <input type="text" id="descripcion" class="form-control" name="descripcion" required>              
-                 </div>   
-            </div>
-            
-            <div class="form-group">
+                    <div>
+                        <label for="nom_profesional"> Profesional: </label>           
+                        <select id="nom_profesional" class="form-control" name="nom_profesional" required>
+                            <option>Nombre del profesional</option>
+                            {%
+                                for profesional in profesionales
+                            %}
+                                <option value="{{ profesional.1 }}">{{ profesional.1 + ' ' + profesional.2 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 
-            </div>      
-            
+                    <div class="center-form">
+                        <div class="form-container col-12">
+                            <label for="fecha"> Fecha: </label>
+                            <input type="date" id="fecha" class="form-control" name="fecha" required>   
+                        </div>  
+                        <div class="form-container col-12">
+                            <label for="hora"> Hora: </label>
+                            <input type="time" id="hora" class="form-control" name="hora" Placeholder="00:00" required>   
+                        </div>  
+                    </div>       
+                    
+                    <div class="col-lg-12">                    
+                        <label for="descripcion"> Descripción </label>
+                        <input type="text" id="descripcion" class="form-control" name="descripcion" Placeholder="Descripción" required>              
+                    </div>   
+                </div>
+            </div>                  
         </div>
-
-        <a type="button" href="/paciente"><button type="submit">Agendar Cita</button></a>          
-    </form>
+        <button type="submit" class="btn btn-primary">Agendar Cita</button>          
+        <script>
+            document.getElementById('nueva-cita-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevenir el envío inmediato del formulario
     
+                // Obtener el mensaje JSON del servidor y mostrarlo como una alerta
+                fetch('/obtener_mensaje')
+                    .then(response => response.json())
+                    .then(data => {
+                        const confirmar = confirm(data.mensaje + '\n¿Apruebas el uso sensible de datos?' +'\nTodos los datos en uso están protegidos');
+                        if (confirmar) {
+                            // Si se confirma la alerta, enviar el formulario manualmente
+                            event.target.submit();
+                        } else {
+                            // Si se cancela la alerta, no hacer nada
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener el mensaje JSON: ', error);
+                    });
+            });
+        </script>
+    </form> 
+    <script type="text/javascript" src="/static/js/obtenerDate.js"></script> 
 </body>
 </html>
 {% endblock %}

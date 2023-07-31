@@ -12,6 +12,14 @@ CREATE TABLE Usuarios (
   passw VARCHAR(45)
 );
 
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `nom_usuario`, `nombre`, `ap_paterno`, `ap_materno`, `correo`, `passw`) VALUES
+(1, 'carlitosonichan777', 'carlitos', 'esto es', 'una prueba', 'carlitosonichan777@gmail.com', 'ola');
+
+
 -- Tabla Paciente 2
 CREATE TABLE Paciente (
   id_paciente INT PRIMARY KEY auto_increment,
@@ -37,18 +45,39 @@ CREATE TABLE Clinicas(
   num_tel INT (10)
 ); 
 
+
+--
+-- Volcado de datos para la tabla `clinicas`
+--
+
+INSERT INTO `clinicas` (`id_clinica`, `nombre`, `descripcion`, `direccion`, `num_tel`) VALUES
+(1, 'Resilitente ', 'Institución independiente dedicada a la salud', 'Santa Anita', 2147483647),
+(2, 'HOREM', 'Centro de salud publica', 'Centro', 2147483647),
+(3, 'Agua Clara', 'Instutución mediocre y saturada y fea', 'Ciudad Satélite Morelos', 2147483647);
+
+
 -- Tabla Profesional_encargado 4
 CREATE TABLE Profesional_encargado (
-  id_pro INT PRIMARY KEY auto_increment,
-  nom VARCHAR(45),
-  ap VARCHAR(45),
-  especialidad VARCHAR(45),
-  cedula_profesional VARCHAR(7),
-  num_telefono INT(10),
-  correo_elec VARCHAR(45),
-  horario VARCHAR(10), 
-  nom_clinica VARCHAR(45)
+  id_pro INT PRIMARY KEY auto_increment, 
+  nom VARCHAR(45),                        
+  ap VARCHAR(45),                        
+  especialidad VARCHAR(45),              
+  cedula_profesional VARCHAR(7),         
+  num_telefono INT(10),                  
+  correo_elec VARCHAR(45),               
+  horario VARCHAR(10),                   
+  nom_clinica VARCHAR(45)                  
 );
+
+--
+-- Volcado de datos para la tabla `profesional_encargado`
+--
+
+INSERT INTO `profesional_encargado` (`id_pro`, `nom`, `ap`, `especialidad`, `cedula_profesional`, `num_telefono`, `correo_elec`, `horario`, `nom_clinica`) VALUES
+(1, 'Yolanda ', 'Esparza', 'Psicologa', '1234567', 2147483647, 'ejemplo@gmail.com', 'MIX', 'Resilitente '),
+(2, 'Alejandro', 'Diaz', 'Psicologo', '1234568', 2147483647, 'ejemplo2@gmail.com', 'MIX', 'HOREM'),
+(4, 'Tontuelo', 'Fernandez', 'Psiquiatra', '1234567', 2147483647, 'ejemplo2@gmail.com', 'MIX', 'Agua Clara');
+
 
 -- Tabla Horario 5
 CREATE TABLE Horario (
@@ -56,22 +85,25 @@ CREATE TABLE Horario (
   desc_horario VARCHAR(255)
 );
 
+--
+-- Volcado de datos para la tabla `horario`
+--
+INSERT INTO `horario` (`id_horario`, `desc_horario`) VALUES
+('MAT', 'Matutino'),
+('MIX', 'Mixto'),
+('VES', 'Vespertino');
+
 -- Tabla Citas 6
 CREATE TABLE Citas (
   id_cita INT PRIMARY KEY auto_increment,
   descripcion VARCHAR(255),
   fecha DATE,
-  lugar VARCHAR(255),
+  hora TIME,
   id_usuario INT,
-  id_paciente INT,
   nom_paciente VARCHAR(45),
-  id_profesional INT,
-  id_horario VARCHAR(10),
+  nom_profesional VARCHAR(45),
   nom_clinica VARCHAR(45),
-  FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
-  FOREIGN KEY (id_paciente) REFERENCES Paciente(id_paciente),
-  FOREIGN KEY (id_profesional) REFERENCES Profesional_encargado(id_pro),
-  FOREIGN KEY (id_horario) REFERENCES Horario(id_horario)
+  FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
 );
 
 -- Tabla Historial_citas 7

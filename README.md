@@ -8,6 +8,7 @@
  - pip install pymysql 
  - pip install flask_mysqldb
  - pip install functools
+ - pip install datetime
 
 # Instalación de la base de datos: 
  - Ir al navegador e ingresar en la url bar: "localhost"

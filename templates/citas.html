@@ -19,14 +19,15 @@
             <div id="alertPlaceholder"></div>
         </center>
         <center>
-            <a href='/nueva_clinica' class="btn btn-primary">Agregar una cita</a>
+            <a href='/nueva_cita' class="btn btn-primary">Agregar una cita</a>
         </center>
         <center>
             <table class="content-table">
                 <thead>
                     <tr>
                         <th>Nombre del paciente</th>      
-                        <th>Descripción</th>                                          
+                        <th>Fecha</th>                                          
+                        <th>Hora</th>
                         <th></th>
                         <th></th>
                         
@@ -36,19 +37,22 @@
                     {% for cita in citas %}
                     <tr>
                         <td>
-                            {{ cita.1}}
+                            {{ cita.5}}
                         </td>
                         <td>
-                            {{cita.2 }}
+                            {{ cita.2 }}
+                        </td>
+                        <td>
+                            {{ cita.3 }}
                         </td>
 
                         <td bgcolor="#828282" width="60">
-                            <!--/ed_paciente/{{cita.0}}-->
-                            <center><a href="/edi_cita/{{cita.0}}" style="color:#FFFFFF; text-decoration:none;">Editar &nbsp;<i class="far fa-edit"></i></a></center>
+                            <!--/ver_paciente/{{cita.0}}-->
+                            <center><a href="/ver_cita/{{cita.0}}" style="color:#FFFFFF; text-decoration:none;">Ver &nbsp;<i class="far fa-edit"></i></a></center>
                         </td>
                         <td bgcolor="#FFF5757" width="60">
                             <!-- /bor_paciente/{{cita.0}} -->
-                            <center><a href="#" style="color:#FFFFFF; text-decoration:none;" onclick="confirmarEliminacion('{{ clinica.0 }}')">Borrar &nbsp;<i class="fas fa-trash-alt"></i></a></center>
+                            <center><a href="#" style="color:#FFFFFF; text-decoration:none;" onclick="confirmarEliminacion('{{ cita.0 }}')">Borrar &nbsp;<i class="fas fa-trash-alt"></i></a></center>
                         </td>
                     </tr>
                     {% endfor %}
