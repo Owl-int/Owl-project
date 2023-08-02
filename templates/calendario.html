@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario</title>
+  <link rel="stylesheet" href="/static/css/cal.css">
+</head>
+<body>
+  <br>
+  <div>
+    <center>
+      {% for histo in historial %}
+        <h3 class="tittle_inline"> Historial de: </h3>
+        <h3 style="display: inline;" class="tittle_color"> {{histo.2}}</h3>
+      {% endfor %}
+    </center>
+  </div>
+
+  <center>
+  <br>
+    <div class="calendar">
+      <div class="header">
+        <button id="prevBtn">&lt;</button>
+        <div id="monthYear"></div>
+        <button id="nextBtn">&gt;</button>
+      </div>
+      <div class="weekdays">
+        <div>D</div>
+        <div>L</div>
+        <div>M</div>
+        <div>M</div>
+        <div>J</div>
+        <div>V</div>
+        <div>S</div>
+      </div>
+      <div class="days" id="days"></div>
+    </div>
+  </center>
+  <script src="/static/js/cal.js"></script>
+  
+</body>
+</html>
+
+{% endblock %}

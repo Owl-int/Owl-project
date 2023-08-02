@@ -229,6 +229,7 @@ def nuevo_paciente():
         aux_fecha_nacimiento = request.form['fecha_nacimiento']
         aux_genero = request.form['genero']
         aux_civil = request.form['civil']        
+        aux_contacto = request.form['contacto']
         aux_antecedentes = request.form['antecedentes']    
         aux_medicamentos = request.form['medicamentos']
         
@@ -236,10 +237,10 @@ def nuevo_paciente():
         cursor = conn.cursor()
         
         cursor.execute( ' INSERT INTO Paciente (registro_online, id_usuario, nombre_cliente, '
-                        ' ap_pa, ap_ma, fecha_nacimiento, genero, estado_civil, antecedentes_medicos, '
-                        ' medicamentos_actuales) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',  
+                        ' ap_pa, ap_ma, fecha_nacimiento, genero, contacto, estado_civil, antecedentes_medicos, '
+                        ' medicamentos_actuales) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',  
                         (aux_regis, id_aux, aux_nombre_paciente, aux_ap_pa, aux_ap_ma, aux_fecha_nacimiento,
-                        aux_genero, aux_civil, aux_antecedentes, aux_medicamentos))
+                        aux_genero, aux_civil, aux_contacto, aux_antecedentes, aux_medicamentos))
         conn.commit()
         conn.close() 
         return redirect('paciente')       
@@ -271,17 +272,18 @@ def modificar_paciente(id):
         aux_ap_ma = request.form['ap_ma']
         aux_fecha_nacimiento = request.form['fecha_nacimiento']
         aux_genero = request.form['genero']
-        aux_civil = request.form['civil']        
+        aux_civil = request.form['civil']       
+        aux_contacto = request.form['contacto'] 
         aux_antecedentes = request.form['antecedentes']    
         aux_medicamentos = request.form['medicamentos']
         
         conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')
         cursor = conn.cursor()
         
-        cursor.execute(' update Paciente set registro_online=%s, nombre_cliente=%s, ap_pa=%s, ap_ma=%s, fecha_nacimiento=%s, genero=%s, estado_civil=%s, '
-                       ' antecedentes_medicos=%s, medicamentos_actuales=%s '
-                       ' where id_paciente=%s', (aux_regis, aux_nombre_paciente, aux_ap_pa, 
-                        aux_ap_ma, aux_fecha_nacimiento, aux_genero, aux_civil, aux_antecedentes, aux_medicamentos, id))
+        cursor.execute(' update Paciente set registro_online=%s, nombre_cliente=%s, ap_pa=%s, ap_ma=%s, fecha_nacimiento=%s, genero=%s, '
+                       ' contacto=%s, estado_civil=%s, antecedentes_medicos=%s, medicamentos_actuales=%s '
+                       ' where id_paciente=%s', (aux_regis, aux_nombre_paciente, aux_ap_pa,aux_ap_ma, aux_fecha_nacimiento, 
+                        aux_genero, aux_civil, aux_contacto, aux_antecedentes, aux_medicamentos, id))
         conn.commit()
         conn.close()
         return redirect(url_for('paciente'))
@@ -452,6 +454,7 @@ def bor_profesional(id):
 
 
 ##-----------------------------Citas--------------------------------------------------------------------------------##
+# Tabla de citas
 @app.route("/citas", methods=['GET', 'POST'])
 @login_required #Comprobar la sesión
 def citas(): 
@@ -472,13 +475,15 @@ def inicializar_variables():
 # Nueva citas
 @app.route('/nueva_cita', methods=['GET', 'POST'])
 def nueva_cita(): 
+    # Instanciar las variables globales
     Date.get_date_year()
     get_user()
     inicializar_variables()
-    
+    # Inicializar las variables globales 
     id_us=g.id_us
     anio_actual=g.anio
     
+    # Adquirir los datos para el llenado de datos
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()  
     cursor.execute(' Select * from Paciente where id_usuario=%s', (id_us))
@@ -488,6 +493,7 @@ def nueva_cita():
     cursor.execute(' Select * from clinicas ')
     datos3=cursor.fetchall()
     
+    # Formulario 
     if request.method == 'POST': 
         aux_nom_paciente = request.form['nom_paciente']
         aux_nom_profesional = request.form['nom_profesional']
@@ -496,6 +502,7 @@ def nueva_cita():
         aux_descripcion = request.form['descripcion']
         aux_clinica = request.form['clinica']
         
+        # Darle formato al nombre completo del paciente en una sola variable
         cursor.execute(' Select nombre_cliente, ap_pa, ap_ma from paciente where nombre_cliente=%s', (aux_nom_paciente))
         datos5=cursor.fetchall()
         if datos5: 
@@ -508,7 +515,8 @@ def nueva_cita():
             print(full_name)
         else: 
             print('No se pudo encontrar el nombre completo')    
-            
+         
+        # Darle formato al nombre completo del profesional en una sola variable   
         cursor.execute (' Select nom, ap from profesional_encargado where nom=%s ', (aux_nom_profesional))
         datos6=cursor.fetchall()
         if datos6: 
@@ -519,6 +527,7 @@ def nueva_cita():
             full_name_pro = ("".join(full_name_pro_a))
             print (full_name_pro)
         
+        # Calcular fecha de nacimiento para calcular la edad 
         cursor.execute(' Select fecha_nacimiento from paciente where nombre_cliente=%s', (aux_nom_paciente))
         dato4=cursor.fetchone()
         conn.commit()
@@ -531,9 +540,11 @@ def nueva_cita():
                 anio_nac=int(anio_nac)
                 print('anio_nac:', anio_nac)
         
+        # Comprobar edad 
         comprobar_edad= (anio_actual - anio_nac) #Variable para el año de nacimiento del paciente
         print('Comprobar edad: ',comprobar_edad)
         
+        # Comprobación de la edad 
         if (comprobar_edad<=18): 
             alerta=('Concentimiento para menores de edad')            
         else: 
@@ -544,20 +555,34 @@ def nueva_cita():
         cursor.execute(' Select count(*) from citas where fecha=%s and hora=%s', (aux_fecha, aux_hora))
         fechhora= cursor.fetchall()  
         
+        # Validar existencias de los datos de la fecha y hora
         if (fechhora[0][0] !=0): 
             error="Fecha y hora no disponibles"
             return render_template("error_usuario.html", des_error=error, paginaant='/nueva_cita')
         
         else:
+            # Hacer alta 
+            cursor.execute(' Select id_paciente from Paciente where nombre_cliente=%s', (aux_nom_paciente))
+            id_paci = cursor.fetchone()
+
             cursor.execute(' Insert into citas (descripcion, fecha, hora, id_usuario, '
                         ' nom_paciente, nom_profesional, nom_clinica) VALUES '
                         '(%s, %s, %s, %s, %s, %s, %s) ',
                         (aux_descripcion, aux_fecha, aux_hora, id_us, full_name, full_name_pro, aux_clinica))
             conn.commit()
+
+            # Fetch the last inserted id from the 'Citas' table
+            cursor.execute('SELECT LAST_INSERT_ID()')
+            id_cita = cursor.fetchone()[0]
+
+            cursor.execute('Insert into historial_citas (id_usuario, id_paciente, nombre_cliente, id_cita, fecha) '
+                        ' VALUES (%s, %s, %s, %s, %s)',
+                        (id_us, id_paci, full_name, id_cita, aux_fecha))
+            conn.commit()
             conn.close()
+        # redireccionar a la tabla citas 
         return redirect(url_for('citas'))
     return render_template('nueva_cita.html', pacientes=datos1, profesionales=datos2, clinicas=datos3)
-
 
 # Obtener mensaje 
 @app.route('/obtener_mensaje')
@@ -566,7 +591,7 @@ def obtener_mensaje():
     ob_mensaje = {'mensaje': g.mensaje }
     return jsonify(ob_mensaje)
 
-
+# Borrar citas
 @app.route('/bor_cita/<string:id>')
 def bor_cita(id): 
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
@@ -576,6 +601,7 @@ def bor_cita(id):
     conn.close()
     return redirect(url_for('citas'))
 
+# Ver citas 
 @app.route('/ver_cita/<string:id>', methods=['GET', 'POST'])
 def ver_cita(id): 
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
@@ -585,6 +611,18 @@ def ver_cita(id):
     conn.commit()
     conn.close()
     return render_template('ver_cita.html', citas=datos) 
+
+# Ver el calendario de las citas
+@app.route("/calendario/<string:id>", methods=['GET', 'POST'])
+@login_required #Comprobar la sesión
+def calendario(id):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
+    cursor = conn.cursor()
+    cursor.execute(' Select * from historial_citas where id_cita=%s', (id))
+    datos = cursor.fetchall()
+    conn.commit()
+    conn.close()
+    return render_template('calendario.html', historial=datos)
 
 
 ##-----------------------------Articulos--------------------------------------------------------------------------------##

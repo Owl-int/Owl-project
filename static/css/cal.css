@@ -1,0 +1,87 @@
+
+  
+  .calendar {
+    border: 1px solid #ccc;
+    width: 300px;
+    padding: 10px;
+    background-color: #fff; /* Fondo blanco para el calendario */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para resaltar el calendario */
+    border-radius: 5px; /* Bordes redondeados */
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  #monthYear {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007bff; /* Azul brillante para el mes y año */
+  }
+  
+  button {
+    background: none;
+    border:none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #007bff; /* Azul brillante para los botones de navegación */
+  }
+  
+  .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+  
+  .days div {
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Estilo para los días del mes */
+  .days div:not(:empty) {
+    background-color:#e1ecff; /* Azul claro para los días del mes */
+    cursor: pointer;
+  }
+  
+  /* Estilo para los días del mes cuando se pasa el mouse por encima */
+  .days div:not(:empty):hover {
+    background-color: #c3dbff; /* Azul más claro al pasar el mouse por los días del mes */
+  }
+  .sunday { /*Rojo para los dias domigos*/
+    color: red;
+    font-weight: bold;
+  }
+  
+  /* Estilo para los días que no pertenecen al mes actual */
+  .days div:empty {
+    background-color: #f8f8f8; /* Color de fondo para los días fuera del mes actual */
+  }
+  
+
+  .tittle_color{
+    color: #007BFF; 
+  }
+  
+  .tittle_inline{
+    display: inline-block;
+  }
+  
+  
+  .tittle_pos {
+    justify-content: left;
+    justify-self: left;
+    display: flex;
+    padding-left: 27.5%;
+  
+  }

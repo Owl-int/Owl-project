@@ -58,7 +58,7 @@
                 <div class="form-container">
                     <label for="civil">Estado civil: </label>
                     <select id="civil" class="form-control" name="civil" required>
-                        <option>{{paciente.8}}</option>
+                        <option>{{paciente.9}}</option>
                         <option value="soltero">Soltero</option>
                         <option value="casado">Casado</option>
                         <option value="divorciado">Divorciado</option>
@@ -67,35 +67,50 @@
                 </div>        
             </div>
             
-            <div class="radio">
-                <div class="form-container">
-                    <label for="regis_on" required>¿Está registrado en Owl? </label> 
-                    <div class="center-radio">
-                        <input type="radio" name="regis_on" id="regis_on_si" value="Si" {% if paciente.1 == 'Si' %}checked{% endif %}>
-                        <label for="regis_on_si">Sí</label>
-                        <input type="radio" name="regis_on" id="regis_on_no" value="No" {% if paciente.1 == 'No' %}checked{% endif %}>
-                        <label for="regis_on_no">No</label>
+            <div class="center-form">
+                <div >
+                    <center>
+                        <label for="contacto">Contacto: </label>
+                        <input type="text" id="contacto" class="form-control" name="contacto" value="{{paciente.8}}" required>
+                    </center>
+                </div>
+
+                <div>
+                    <div class="radio">
+                        <div class="form-container">
+                            <label for="regis_on" required>¿Está registrado en Owl? </label> 
+                            <div class="center-radio">
+                                <input type="radio" name="regis_on" id="regis_on_si" value="Si" {% if paciente.1 == 'Si' %}checked{% endif %}>
+                                <label for="regis_on_si">Sí</label>
+                                <input type="radio" name="regis_on" id="regis_on_no" value="No" {% if paciente.1 == 'No' %}checked{% endif %}>
+                                <label for="regis_on_no">No</label>                 
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-container">
-                    <label for="antecedentes" required>¿Cuénta con antecedentes médicos? </label>
-                    <div class="center-radio">
-                        <input type="radio", name="antecedentes" id="antecedentes_si" value="Si" {% if paciente.9 == 'Si'%}checked {% endif %}>
-                        <label for="antecedentes_si">Sí</label>
-                        <input type="radio", name="antecedentes" id="antecedentes_no" value="No" {% if paciente.9 == 'No'%}checked {% endif %}>
-                        <label for="antecedentes_no">No</label>
-                    </div>    
+                <div>
+                    <div class="form-container">
+                        <label for="antecedentes" required>¿Cuénta con antecedentes médicos? </label>
+                        <div class="center-radio">
+                            <input type="radio", name="antecedentes" id="antecedentes_si" value="Si" {% if paciente.10 == 'Si'%}checked {% endif %}>
+                            <label for="antecedentes_si">Sí</label>
+                            <input type="radio", name="antecedentes" id="antecedentes_no" value="No" {% if paciente.10 == 'No'%}checked {% endif %}>
+                            <label for="antecedentes_no">No</label>
+                        </div>    
+                    </div>
                 </div>
-                
+            </div>
+            <div>
                 <div class"">
-                    <div class="form-container">                     
+                    <div class="form-container">                    
                         <label for="medicamentos">Medicamentos </label>
-                        <input type="text" id="medicamentos" class="form-control" name="medicamentos" value="{{paciente.10}}"required>              
+                        <input type="text" id="medicamentos" class="form-control" name="medicamentos" value="{{ paciente.11 }}"required>              
                     </div>
                 </div>
             </div>      
-            
         </div>
+            
+        
 
         <div class="center-form">   
 

@@ -39,8 +39,8 @@
  - @app.route('') : función del programa 
  - def : función lógica 
  - Methods: 
-    - POST:  el método POST se utiliza para enviar datos al servidor desde un cliente. El método POST se utiliza 
-            comúnmente para enviar información confidencial o datos que deben ser procesados y almacenados en el servidor de manera segura
+ - POST: el método POST se utiliza para enviar datos al servidor desde un cliente. El método POST se utiliza 
+         comúnmente para enviar informacióconfidencial o datos que deben ser procesados y almacenados en el servidor de manera segura
  - %s: asignación vacia que ocupa un 'value' en sql
  - db: Base de datos
 
@@ -52,3 +52,15 @@
 
  (tremenda bola de fracasados)
  (no sierto, puro etsito aqui)
+
+# Git 
+- Git clone https://github.com/Owl-int/Owl-project.git
+backup 
+- Git clone https://github.com/PanDuro14/Owl.git 
+
+# Virtualenv 
+- mkvirtualenv flask -p python3 
+- deactivate: salir del virtualenv 
+- workon flask: entrar al virtualenv 
+
+

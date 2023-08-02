@@ -64,6 +64,14 @@ button {
     height: auto;
 }
 
+.center-form-2{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: auto;
+	width: calc(100%);
+}
+
 .horz-form{
     display: flex;
     width: 50%;
@@ -72,7 +80,7 @@ button {
 .form-container {
     display: block;
 	position: relative;
-	width: calc(30%);
+	width: calc(33%);
 	height: calc(5%);
 	margin: 10px auto;
 	padding: 30px 10px 10px;
@@ -145,14 +153,14 @@ button {
 .radio{
 	display: flex;
 	justify-content: center;
-	width: calc(100%);
+	width: calc(150%);
 	height: calc(-60%);
 }
 
 .center-radio {
 	display: flex;
 	justify-content: flex-start;
-	width: auto;
+	width: calc(100%);
 	height: auto;
 	
 }
@@ -183,3 +191,4 @@ button {
 	padding-left: 27.5%;
 
 }
+

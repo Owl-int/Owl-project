@@ -61,23 +61,36 @@
                 </div>        
             </div>
             
-            <div class="radio">
-                <div class="form-container">
-                    <label for="regis_on" required>¿Está registrado en Owl? </label> 
-                    <div class="center-radio">
-                        <input type="radio", name="regis_on" id="regis_on" value="Si">Sí</input>
-                        <input type="radio", name="regis_on" id="regis_on" value="No">No</input>                  
+            <div class="center-form">
+                <div >
+                    <center>
+                        <label for="contacto">Contacto: </label>
+                        <input type="text" id="contacto" class="form-control" name="contacto" placeholder="Num. teléfono" required>
+                    </center>
+                </div>
+
+                <div>
+                    <div class="radio">
+                        <div class="form-container">
+                            <label for="regis_on" required>¿Está registrado en Owl? </label> 
+                            <div class="center-radio">
+                                <input type="radio", name="regis_on" id="regis_on" value="Si">Sí</input> 
+                                <input type="radio", name="regis_on" id="regis_on" value="No">No</input>                  
+                            </div>
+                        </div>
                     </div>
                 </div>
-    
-                <div class="form-container">
-                    <label for="antecedentes" required>¿Cuénta con antecedentes médicos? </label>
-                    <div class="center-radio">
-                        <input type="radio", name="antecedentes" id="antecedentes" value="Si">Sí</input>
-                        <input type="radio", name="antecedentes" id="antecedentes" value="No">No</input>
-                    </div>    
+                <div>
+                    <div class="form-container">
+                        <label for="antecedentes" required>¿Cuénta con antecedentes médicos? </label>
+                        <div class="center-radio">
+                            <input type="radio", name="antecedentes" id="antecedentes" value="Si">Sí</input>
+                            <input type="radio", name="antecedentes" id="antecedentes" value="No">No</input>
+                        </div>    
+                    </div>
                 </div>
-                
+            </div>
+            <div>
                 <div class"">
                     <div class="form-container">                    
                         <label for="medicamentos">Medicamentos </label>
@@ -85,13 +98,10 @@
                     </div>
                 </div>
             </div>      
-            
         </div>
 
         <div class="center-form">   
              
-            
-            
             <script type="text/javascript">
                 document.getElementById("formu").addEventListener("submit", function(event){
                     event.preventDefault(); 

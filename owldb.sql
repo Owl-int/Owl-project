@@ -31,6 +31,7 @@ CREATE TABLE Paciente (
   fecha_nacimiento DATE, -- Calcular si es mayor de edad xd
   genero VARCHAR(10),
   estado_civil VARCHAR(10),
+  contacto VARCHAR(10),
   antecedentes_medicos VARCHAR(255),
   medicamentos_actuales VARCHAR(255),
   FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
@@ -42,7 +43,7 @@ CREATE TABLE Clinicas(
   nombre VARCHAR(45), 
   descripcion VARCHAR(45), 
   direccion VARCHAR(45),
-  num_tel INT (10)
+  num_tel VARCHAR (10)
 ); 
 
 
@@ -63,7 +64,7 @@ CREATE TABLE Profesional_encargado (
   ap VARCHAR(45),                        
   especialidad VARCHAR(45),              
   cedula_profesional VARCHAR(7),         
-  num_telefono INT(10),                  
+  num_telefono VARCHAR(10),                  
   correo_elec VARCHAR(45),               
   horario VARCHAR(10),                   
   nom_clinica VARCHAR(45)                  
@@ -108,9 +109,13 @@ CREATE TABLE Citas (
 
 -- Tabla Historial_citas 7
 CREATE TABLE Historial_citas (
+  id_usuario INT, 
+  id_paciente INT, 
+  nombre_cliente VARCHAR(50),
   id_cita INT,
   fecha DATE,
-  progreso_paciente INT(10),
+  FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario), 
+  FOREIGN KEY (id_paciente) REFERENCES Paciente(id_paciente),
   FOREIGN KEY (id_cita) REFERENCES Citas(id_cita)
 );
 -- Contacto Emergencia 8
@@ -118,7 +123,7 @@ CREATE TABLE Contacto_emergencia(
   id_usuario INT,
   nombre_contacto VARCHAR(45),
   relacion_paciente VARCHAR(45),
-  num_tel int(10),
+  num_tel VARCHAR(10),
   FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
 ); 
 
