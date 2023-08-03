@@ -1,65 +1,126 @@
-{%extends "layout.html" %} <!-- Importa el layout.html -->
-{% block content %}   <!-- Delimita el fin del layout.html -->
+{%extends "layout.html" %}
+<!-- Importa el layout.html -->
+{% block content %}
+<!-- Delimita el fin del layout.html -->
 
 <head>
-    <title>OWL</title>
-    <link rel="stylesheet" href="static/css/slide.css">
+  <title>OWL</title>
+  <link rel="stylesheet" href="static/css/slide.css" />
+  <link rel="stylesheet" href="static/css/aart.css" />
 
-    <!--
+  <!--
 
       Esta es la página principal de Owl
 
     -->
 </head>
-<body style="background-color:#F6F6F6;">
-<center>
-    <script type="text/javascript" src="/static/js/jquery-3.2.1.slim.min.js"></script>
+<body style="background-color: #f6f6f6">
+  <center>
+    <script
+      type="text/javascript"
+      src="/static/js/jquery-3.2.1.slim.min.js"
+    ></script>
     <script type="text/javascript" src="/static/js/popper.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"
+    ></script>
     <script defer src="/static/js/slide_funcion.js"></script>
-    <br>
-    <br>
+    <br />
+    <br />
     <!-- Slide -->
-    <section id="container-slider">	
-        <a href="javascript: fntExecuteSlide('prev');" class="arrowPrev"><i class="fas fa-chevron-circle-left"></i></a>
-        <a href="javascript: fntExecuteSlide('next');" class="arrowNext"><i class="fas fa-chevron-circle-right"></i></a>
-        <ul class="listslider">
-            <li><a itlist="itList_0" href="#" class="item-select-slid"></a></li>
-            <li><a itlist="itList_1" href="#"></a></li>
-            <li><a itlist="itList_2" href="#"></a></li>
-        </ul>
-        <ul id="slider">
-        <li style="background-image: url('/static/img/Anny_pet_0.2.png'); z-index:0; opacity: 1;">
-            <div class="content_slider" >
-              <div>
-                <h2>Welcome to Owl</h2>
-            <p>Descubra en qué consiste Owl</p>
-          </div>
+    <section id="container-slider">
+      <a href="javascript: fntExecuteSlide('prev');" class="arrowPrev"
+        ><i class="fas fa-chevron-circle-left"></i
+      ></a>
+      <a href="javascript: fntExecuteSlide('next');" class="arrowNext"
+        ><i class="fas fa-chevron-circle-right"></i
+      ></a>
+      <ul class="listslider">
+        <li><a itlist="itList_0" href="#" class="item-select-slid"></a></li>
+        <li><a itlist="itList_1" href="#"></a></li>
+        <li><a itlist="itList_2" href="#"></a></li>
+      </ul>
+      <ul id="slider">
+        <li
+          style="
+            background-image: url('/static/img/Anny_pet_0.2.png');
+            z-index: 0;
+            opacity: 1;
+          "
+        >
+          <div class="content_slider">
+            <div>
+              <h2>Welcome to Owl</h2>
+              <p>Descubra en qué consiste Owl</p>
             </div>
-          </li>
-          <li style="background-image: url('/static/img/oficina2.jpeg'); ">
-            <!--  -->
-            <div class="content_slider" >
-              <div>
-                <h2>Owl introduction</h2>
-            <p>Owl es un sistema dedicado a la salud mental, este es un prototipo inicial </p>
           </div>
+        </li>
+        <li style="background-image: url('/static/img/oficina2.jpeg')">
+          <!--  -->
+          <div class="content_slider">
+            <div>
+              <h2>Owl introduction</h2>
+              <p>
+                Owl es un sistema dedicado a la salud mental, este es un
+                prototipo inicial
+              </p>
             </div>
-          </li>
-          <li style="background-image: url('/static/img/logo3.png'); ">
-            <div class="content_slider" >
-              <div>
-                <h2>Estrategias de negocio</h2>
-            <p>Las estrategias de negocio representan planes o métodos...</p>
           </div>
+        </li>
+        <li style="background-image: url('/static/img/logo3.png')">
+          <div class="content_slider">
+            <div>
+              <h2>Estrategias de negocio</h2>
+              <p>Las estrategias de negocio representan planes o métodos...</p>
             </div>
-          </li>
-       </ul>
-     </section>
+          </div>
+        </li>
+      </ul>
+    </section>
     <!-- Slide /-->
-    
-</center>
+
+  </center>
+
+  <!--Articulos-->
+  <div class="cont">
+    <div class="rectangulo"> <!--ARTICULO 1 -->
+      <img src="/static/img/m.jpg "
+      width="110" height="100" alt="Imagen 1" class="b">
+      <p>Artículo sobre salud mental.</p>
+      <a type="button" href="/art1"><button class="boton-leer-mas">Leer más</button></a>
+    </div>
+
+    <div class="rectangulo"> <!--ARTICULO 2-->
+      <img src="/static/img/depresion.jpg" width="110" height="100" alt="Imagen 2" class="b">
+      <p>Artículo sobre depresión.</p>
+      <a type="button" href="/art2"><button class="boton-leer-mas">Leer más</button></a>
+    </div>
+
+    <div class="rectangulo"> <!--ARTICULO 3-->
+      <img src="/static/img/ansiedad.jpg"
+      width="110" height="100"alt="Imagen 3" class="b">
+      <p>Artículo sobre ansiedad.</p>
+      <a type="button" href="/art3"><button class="boton-leer-mas">Leer más</button></a>
+    </div>
+
+    <div class="rectangulo"> <!--ARTICULO 4-->
+      <img src="/static/img/estres.jpg" width="110" height="100" alt="Imagen 4" class="b">
+      <p>Artículo sobre estres.</p>
+      <a type="button" href="/art4"><button class="boton-leer-mas">Leer más</button></a>
+    </div>
+
+    <div class="rectangulo"> <!--ARTICULO 5-->
+      <img src="/static/img/suicidio.jpg"
+      width="110" height="100" alt="Imagen 5" class="b">
+      <p>Artículo sobre suicidio.</p>
+      <a type="button" href="/art5"><button class="boton-leer-mas">Leer más</button></a>
+    </div>
+    <!-- Fin Articulos-->
+
+</div>
 </body>
 
-{% endblock %} <!-- Finaliza el apartado donde se importa otro lenguaje -->
+{% endblock %}
+<!-- Finaliza el apartado donde se importa otro lenguaje -->

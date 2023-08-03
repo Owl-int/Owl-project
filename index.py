@@ -631,6 +631,30 @@ def calendario(id):
 def articulo_psico():
     return render_template('articulo_psico.html')
 
+#Articulo 1#
+@app.route("/art1")
+def art1():
+    return render_template('art1.html')
+
+#Articulo 2#
+@app.route("/art2")
+def art2():
+    return render_template('art2.html')
+
+#Articulo 3#
+@app.route("/art3")
+def art3():
+    return render_template('art3.html')
+
+#Articulo 4#
+@app.route("/art4")
+def art4():
+    return render_template('art4.html')
+
+#Articulo 5#
+@app.route("/art5")
+def art5():
+    return render_template('art5.html')
 
 # fin del programa
 if __name__ == '__main__':
