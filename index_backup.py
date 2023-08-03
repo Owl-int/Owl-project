@@ -11,12 +11,12 @@ import pymysql
 app = Flask(__name__)
 
 # sesion
-app.secret_key = 'cb3066590763fd9b7240a17b414a7df0'
+app.secret_key = 'mysecretkey'
 
-app.config['MYSQL_HOST'] = 'OwlInt.mysql.pythonanywhere-services.com'
-app.config['MYSQL_USER'] = 'OwlInt'
-app.config['MYSQL_PASSWORD'] = 'Olamundo2023'
-app.config['MYSQL_DB'] = 'OwlInt$owldb'
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'owldb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
@@ -80,7 +80,7 @@ def login_required(f):
         
         # Hace la validación del usuario llenando los parámtros de la clase users con las tuplas 
         # de la tabla usuario en la db
-        conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')
         cursor = conn.cursor()
         cursor.execute('select id_usuario, nom_usuario, correo, passw from usuarios where id_usuario=%s', 
                        (session['id_usuario']))
@@ -105,7 +105,7 @@ def singup():
         aux_correo = request.form['correo']
         aux_passw = request.form['passw']
         
-        conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb' )
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb' )
         cursor = conn.cursor()
         # Tomar únicamente los usuarios para comprobar si existe (probablemente se pueda simplificar
         # en una sola linea de código )
@@ -150,7 +150,7 @@ def login():
     if request.method=='POST':
         correo = request.form['correo']
         passw = request.form['passw']
-        conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb' )
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb' )
         cursor = conn.cursor()
         #Verificación de usario 
         cursor.execute('select id_usuario, nom_usuario, passw from usuarios where correo=%s and passw=%s', (correo, passw))
@@ -205,7 +205,7 @@ def logout():
 @login_required #Comprobar la sesión
 def paciente():        
     get_user() # Tomar el id del usuario
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')
     cursor = conn.cursor()  
     id_aux = g.id_us # Definir el id como parámetro condiconal 
 
@@ -233,7 +233,7 @@ def nuevo_paciente():
         aux_antecedentes = request.form['antecedentes']    
         aux_medicamentos = request.form['medicamentos']
         
-        conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
         cursor = conn.cursor()
         
         cursor.execute( ' INSERT INTO Paciente (registro_online, id_usuario, nombre_cliente, '
@@ -251,7 +251,7 @@ def nuevo_paciente():
 def ed_paciente(id):
     get_user()
     id_aux = g.id_us
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')
     cursor = conn.cursor()
     
     cursor.execute(' select * from Paciente '
@@ -277,7 +277,7 @@ def modificar_paciente(id):
         aux_antecedentes = request.form['antecedentes']    
         aux_medicamentos = request.form['medicamentos']
         
-        conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')
         cursor = conn.cursor()
         
         cursor.execute(' update Paciente set registro_online=%s, nombre_cliente=%s, ap_pa=%s, ap_ma=%s, fecha_nacimiento=%s, genero=%s, '
@@ -291,7 +291,7 @@ def modificar_paciente(id):
 # Borrar a un paciente 
 @app.route('/bor_paciente/<string:id>')
 def bor_paciente(id): 
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()    
     cursor.execute(' delete from paciente where id_paciente ={0}'.format(id))    
     conn.commit()
@@ -303,7 +303,7 @@ def bor_paciente(id):
 @app.route("/clinica", methods=['GET', 'POST'])
 @login_required
 def clinica():
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor() 
     cursor.execute(' Select * from Clinicas ')
     datos = cursor.fetchall()
@@ -318,7 +318,7 @@ def nueva_clinica():
         aux_direccion = request.form['direccion']
         aux_num_telefono = request.form['num_telefono']
         
-        conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
         cursor = conn.cursor() 
         cursor.execute (' insert into Clinicas (nombre, descripcion, direccion, num_tel) VALUES '
                         ' (%s, %s, %s, %s)', (aux_nombre, aux_descripcion, aux_direccion, aux_num_telefono))
@@ -329,7 +329,7 @@ def nueva_clinica():
 
 @app.route("/edi_clinica/<string:id>")
 def edi_clinica(id):
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor() 
     cursor.execute(' Select * from clinicas where id_clinica=%s', (id))
     datos = cursor.fetchall()
@@ -344,7 +344,7 @@ def modificar_clinica(id):
         aux_direccion = request.form['direccion']
         aux_num_telefono = request.form['num_telefono']
         
-        conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
         cursor = conn.cursor() 
         cursor.execute('Update Clinicas set nombre=%s, descripcion=%s, direccion=%s, num_tel=%s where id_clinica=%s', 
                        (aux_nombre, aux_descripcion, aux_direccion, aux_num_telefono, id))
@@ -354,7 +354,7 @@ def modificar_clinica(id):
 
 @app.route('/bor_clinica/<string:id>')
 def bor_clinica(id): 
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()    
     cursor.execute(' delete from clinicas where id_clinica ={0}'.format(id))    
     conn.commit()
@@ -367,7 +367,7 @@ def bor_clinica(id):
 @app.route("/profesional", methods=['GET', 'POST'])
 @login_required
 def profesional(): 
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor() 
     cursor.execute('Select * from profesional_encargado')
     datos = cursor.fetchall()
@@ -378,7 +378,7 @@ def profesional():
 @app.route("/nuevo_profesional", methods=['GET', 'POST'])
 def nuevo_profesional(): 
     get_user
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()    
     cursor.execute ('Select * from horario')
     datos=cursor.fetchall()
@@ -408,7 +408,7 @@ def nuevo_profesional():
 
 @app.route("/edi_profesional/<string:id>")
 def edi_profesional(id):
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()    
     cursor.execute ('Select * from profesional_encargado where id_pro=%s', (id))
     datos = cursor.fetchall()
@@ -430,7 +430,7 @@ def modificar_profesional(id):
         aux_horario = request.form['horario']
         aux_clinica = request.form['clinica']
         
-        conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+        conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
         cursor = conn.cursor()
         
         cursor.execute(' UPDATE Profesional_encargado SET nom=%s, ap=%s, especialidad=%s,    '
@@ -444,7 +444,7 @@ def modificar_profesional(id):
      
 @app.route('/bor_profesional/<string:id>')
 def bor_profesional(id): 
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()    
     cursor.execute(' delete from profesional_encargado where id_pro ={0}'.format(id))    
     conn.commit()
@@ -460,7 +460,7 @@ def bor_profesional(id):
 def citas(): 
     get_user()
     id_us=g.id_us
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()  
     cursor.execute(' Select * from citas where id_usuario=%s ', (id_us))  
     datos = cursor.fetchall()
@@ -484,7 +484,7 @@ def nueva_cita():
     anio_actual=g.anio
     
     # Adquirir los datos para el llenado de datos
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()  
     cursor.execute(' Select * from Paciente where id_usuario=%s', (id_us))
     datos1=cursor.fetchall()
@@ -594,7 +594,7 @@ def obtener_mensaje():
 # Borrar citas
 @app.route('/bor_cita/<string:id>')
 def bor_cita(id): 
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()    
     cursor.execute(' delete from citas where id_cita ={0}'.format(id))    
     conn.commit()
@@ -604,7 +604,7 @@ def bor_cita(id):
 # Ver citas 
 @app.route('/ver_cita/<string:id>', methods=['GET', 'POST'])
 def ver_cita(id): 
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()   
     cursor.execute( 'Select * from citas where id_cita=%s', (id))
     datos = cursor.fetchall()
@@ -616,7 +616,7 @@ def ver_cita(id):
 @app.route("/calendario/<string:id>", methods=['GET', 'POST'])
 @login_required #Comprobar la sesión
 def calendario(id):
-    conn = pymysql.connect(host='OwlInt.mysql.pythonanywhere-services.com', user='OwlInt', passwd='Olamundo2023', db='OwlInt$owldb')        
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='owldb')        
     cursor = conn.cursor()
     cursor.execute(' Select * from historial_citas where id_cita=%s', (id))
     datos = cursor.fetchall()
@@ -662,7 +662,7 @@ def art6():
     return render_template('art6.html')
 
 # fin del programa
-# Se omitirá para la producción
-#if __name__ == '__main__':
-#    app.run(port=5000, debug=True)
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)
     
+    #En caso de cambiar el port, notificar al resto del equipo
